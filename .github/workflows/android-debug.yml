@@ -26,12 +26,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
+          cache: gradle
 
       # The ubuntu runner ships the Android SDK (ANDROID_HOME); AGP downloads any missing platform.
       - name: Android SDK location
         run: echo "ANDROID_HOME=$ANDROID_HOME"
-
-      - uses: gradle/actions/setup-gradle@v4
 
       - name: Install JS dependencies
         run: npm ci
@@ -43,14 +42,27 @@ jobs:
         run: npm run build
 
       - name: Core engine + scoring tool tests (JVM)
-        run: ./gradlew --no-daemon :core:test :scoring-experiment:test
+        run: |
+          set -o pipefail
+          ./gradlew --no-daemon :core:test :scoring-experiment:test 2>&1 | tee jvm-build.log
 
       - name: Sync Capacitor Android project
         run: npx cap sync android
 
       - name: Build debug APK and run Android unit tests
         working-directory: android
-        run: ./gradlew --no-daemon assembleDebug testDebugUnitTest lintDebug
+        run: |
+          set -o pipefail
+          ./gradlew --no-daemon assembleDebug testDebugUnitTest lintDebug 2>&1 | tee ../android-build.log
+
+      - name: Error summary
+        if: failure()
+        run: |
+          for f in jvm-build.log android-build.log; do
+            [ -f "$f" ] || continue
+            echo "=== $f ==="
+            grep -E "^e: |error:|warning:.*\[|What went wrong|FAILED|tests completed|Lint found|Errors found" -A4 "$f" | head -80 || true
+          done
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4

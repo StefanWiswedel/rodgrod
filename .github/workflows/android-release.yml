@@ -44,12 +44,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
+          cache: gradle
 
       # The ubuntu runner ships the Android SDK (ANDROID_HOME); AGP downloads any missing platform.
       - name: Android SDK location
         run: echo "ANDROID_HOME=$ANDROID_HOME"
-
-      - uses: gradle/actions/setup-gradle@v4
 
       - run: npm ci
       - run: npm test

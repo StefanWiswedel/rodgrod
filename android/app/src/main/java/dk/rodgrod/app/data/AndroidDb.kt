@@ -49,7 +49,7 @@ class AndroidDb(context: Context, name: String = "rodgrod.db") : Db {
             bind(query, args)
             SQLiteCursor(driver, editTable, query)
         }
-        return db.rawQueryWithFactory(factory, sql, null, null).use { c -> readAll(c) }
+        return db.rawQueryWithFactory(factory, sql, null, "").use { c -> readAll(c) }
     }
 
     private fun readAll(c: Cursor): List<Row> {

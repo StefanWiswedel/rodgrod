@@ -15,3 +15,5 @@ tools/scoring-experiment/out/
 tools/scoring-experiment/credentials.properties
 .env
 .env.*
+jvm-build.log
+android-build.log
