@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.gradle/
+build/
+local.properties
+*.keystore
+*.jks
+keystore.properties
+.idea/
+*.iml
+.DS_Store
+# scoring experiment outputs & personal recordings
+tools/scoring-experiment/recordings/
+tools/scoring-experiment/out/
+tools/scoring-experiment/credentials.properties
+.env
+.env.*
