@@ -23,6 +23,6 @@ dependencies {
 
 tasks.test {
     // Content validation tests read ../content
-    systemProperty("rodgrod.contentDir", rootDir.resolve("content").absolutePath)
+    systemProperty("rodgrod.contentDir", projectDir.resolve("../content").absolutePath)
     testLogging { events("failed"); exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL }
 }

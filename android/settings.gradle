@@ -3,3 +3,7 @@ include ':capacitor-cordova-android-plugins'
 project(':capacitor-cordova-android-plugins').projectDir = new File('./capacitor-cordova-android-plugins/')
 
 apply from: 'capacitor.settings.gradle'
+
+// Shared pure-Kotlin session engine (also built and tested by the root JVM build).
+include ':core'
+project(':core').projectDir = new File('../core')

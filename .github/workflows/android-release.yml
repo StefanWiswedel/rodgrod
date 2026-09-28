@@ -1,0 +1,89 @@
+name: Release (signed APK)
+
+# Push a tag like v0.1.0 to build a signed release APK and attach it to a GitHub Release.
+# Required repository secrets (see README "Releases"):
+#   RODGROD_KEYSTORE_BASE64, RODGROD_KEYSTORE_PASSWORD, RODGROD_KEY_ALIAS, RODGROD_KEY_PASSWORD
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check signing secrets are configured
+        env:
+          KS: ${{ secrets.RODGROD_KEYSTORE_BASE64 }}
+          KSP: ${{ secrets.RODGROD_KEYSTORE_PASSWORD }}
+          KA: ${{ secrets.RODGROD_KEY_ALIAS }}
+          KP: ${{ secrets.RODGROD_KEY_PASSWORD }}
+        run: |
+          missing=""
+          [ -z "$KS" ] && missing="$missing RODGROD_KEYSTORE_BASE64"
+          [ -z "$KSP" ] && missing="$missing RODGROD_KEYSTORE_PASSWORD"
+          [ -z "$KA" ] && missing="$missing RODGROD_KEY_ALIAS"
+          [ -z "$KP" ] && missing="$missing RODGROD_KEY_PASSWORD"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository secrets:$missing. See README.md > Releases."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v3
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: ./gradlew --no-daemon :core:test
+      - run: npx cap sync android
+
+      - name: Decode keystore
+        env:
+          KS: ${{ secrets.RODGROD_KEYSTORE_BASE64 }}
+        run: echo "$KS" | base64 --decode > "$RUNNER_TEMP/release.jks"
+
+      - name: Build signed release APK
+        working-directory: android
+        env:
+          RODGROD_KEYSTORE_PATH: ${{ runner.temp }}/release.jks
+          RODGROD_KEYSTORE_PASSWORD: ${{ secrets.RODGROD_KEYSTORE_PASSWORD }}
+          RODGROD_KEY_ALIAS: ${{ secrets.RODGROD_KEY_ALIAS }}
+          RODGROD_KEY_PASSWORD: ${{ secrets.RODGROD_KEY_PASSWORD }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          ./gradlew --no-daemon assembleRelease -PversionName="$VERSION"
+
+      - name: Verify signature and rename
+        run: |
+          APK=$(ls android/app/build/outputs/apk/release/*.apk | head -1)
+          APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)apksigner
+          "$APKSIGNER" verify --print-certs "$APK"
+          cp "$APK" "rodgrod-${GITHUB_REF_NAME}.apk"
+
+      - name: Remove keystore
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.jks"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: rodgrod-${{ github.ref_name }}.apk
+          generate_release_notes: true
