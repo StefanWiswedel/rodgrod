@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "machine_generated": true,
+  "note": "Short spoken articulatory tips (English, under 10 seconds each). Keyed by target sound. Machine-generated, unverified.",
+  "sounds": {
+    "soft_d": {
+      "tip_id": "tip_soft_d",
+      "name": "the soft D",
+      "text": "The soft D is not an English D. Rest your tongue tip behind your lower teeth and let the sound glide softly, almost like an L."
+    },
+    "stod": {
+      "tip_id": "tip_stod",
+      "name": "stød",
+      "text": "Stød is a short creak in your voice, like the catch in uh-oh. Put it on the vowel or the consonant after it."
+    },
+    "vowel_length": {
+      "tip_id": "tip_vowel_length",
+      "name": "vowel length",
+      "text": "In Danish, vowel length changes the meaning. Hold long vowels clearly longer, keep short vowels really short, and don't let the vowel slide."
+    },
+    "danish_r": {
+      "tip_id": "tip_danish_r",
+      "name": "the Danish R",
+      "text": "Make the Danish R softly at the back of your throat, like a gentle French R. After a vowel, it melts into an ah sound."
+    },
+    "front_rounded": {
+      "tip_id": "tip_front_rounded",
+      "name": "the rounded vowels Y and Ø",
+      "text": "For Y, say ee and round your lips tightly. For Ø, say ay and round your lips. Keep your tongue forward, and keep it steady."
+    },
+    "vowel_quality": {
+      "tip_id": "tip_vowel_quality",
+      "name": "Danish vowels",
+      "text": "Danish has many vowels. Copy the model's vowel exactly rather than using the nearest English one, and don't add an English glide."
+    }
+  }
+}

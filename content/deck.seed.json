@@ -1,0 +1,2242 @@
+{
+ "deck_id": "seed",
+ "version": 1,
+ "language": "da-DK",
+ "machine_generated": true,
+ "note": "Machine-generated and NOT verified by a native speaker. Target-sound tags are approximate. Please correct freely.",
+ "items": [
+  {
+   "id": "mp01",
+   "danish": "mad / mat",
+   "english": "food / matte",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_soft_d",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "mad",
+     "english": "food"
+    },
+    {
+     "danish": "mat",
+     "english": "matte"
+    }
+   ]
+  },
+  {
+   "id": "mp02",
+   "danish": "had / hat",
+   "english": "hate / hat",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_soft_d",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "had",
+     "english": "hate"
+    },
+    {
+     "danish": "hat",
+     "english": "hat"
+    }
+   ]
+  },
+  {
+   "id": "mp03",
+   "danish": "tid / tit",
+   "english": "time / often",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_soft_d",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "tid",
+     "english": "time"
+    },
+    {
+     "danish": "tit",
+     "english": "often"
+    }
+   ]
+  },
+  {
+   "id": "mp04",
+   "danish": "bad / bal",
+   "english": "bath / ball",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_soft_d",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "bad",
+     "english": "bath"
+    },
+    {
+     "danish": "bal",
+     "english": "ball"
+    }
+   ]
+  },
+  {
+   "id": "mp05",
+   "danish": "ved / vel",
+   "english": "know / well",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_soft_d",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "ved",
+     "english": "know"
+    },
+    {
+     "danish": "vel",
+     "english": "well"
+    }
+   ]
+  },
+  {
+   "id": "mp06",
+   "danish": "gade / gale",
+   "english": "street / crazy",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_soft_d",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "gade",
+     "english": "street"
+    },
+    {
+     "danish": "gale",
+     "english": "crazy"
+    }
+   ]
+  },
+  {
+   "id": "mp07",
+   "danish": "hun / hund",
+   "english": "she / dog",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_stod",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "hun",
+     "english": "she"
+    },
+    {
+     "danish": "hund",
+     "english": "dog"
+    }
+   ]
+  },
+  {
+   "id": "mp08",
+   "danish": "man / mand",
+   "english": "one (you) / man",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_stod",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "man",
+     "english": "one (you)"
+    },
+    {
+     "danish": "mand",
+     "english": "man"
+    }
+   ]
+  },
+  {
+   "id": "mp09",
+   "danish": "ven / vend",
+   "english": "friend / turn",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_stod",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "ven",
+     "english": "friend"
+    },
+    {
+     "danish": "vend",
+     "english": "turn"
+    }
+   ]
+  },
+  {
+   "id": "mp10",
+   "danish": "hænder / hender",
+   "english": "hands / happens",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_stod",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "hænder",
+     "english": "hands"
+    },
+    {
+     "danish": "hender",
+     "english": "happens"
+    }
+   ]
+  },
+  {
+   "id": "mp11",
+   "danish": "bønner / bønder",
+   "english": "prayers / farmers",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_stod",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "bønner",
+     "english": "prayers"
+    },
+    {
+     "danish": "bønder",
+     "english": "farmers"
+    }
+   ]
+  },
+  {
+   "id": "mp12",
+   "danish": "mor / mord",
+   "english": "mother / murder",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_stod",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "mor",
+     "english": "mother"
+    },
+    {
+     "danish": "mord",
+     "english": "murder"
+    }
+   ]
+  },
+  {
+   "id": "mp13",
+   "danish": "læse / læsse",
+   "english": "to read / to load",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_vowel_length",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "læse",
+     "english": "to read"
+    },
+    {
+     "danish": "læsse",
+     "english": "to load"
+    }
+   ]
+  },
+  {
+   "id": "mp14",
+   "danish": "mase / masse",
+   "english": "to squash / lots",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_vowel_length",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "mase",
+     "english": "to squash"
+    },
+    {
+     "danish": "masse",
+     "english": "lots"
+    }
+   ]
+  },
+  {
+   "id": "mp15",
+   "danish": "vin / vind",
+   "english": "wine / wind",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_vowel_length",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "vin",
+     "english": "wine"
+    },
+    {
+     "danish": "vind",
+     "english": "wind"
+    }
+   ]
+  },
+  {
+   "id": "mp16",
+   "danish": "tabe / tappe",
+   "english": "to lose / to tap",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_vowel_length",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "tabe",
+     "english": "to lose"
+    },
+    {
+     "danish": "tappe",
+     "english": "to tap"
+    }
+   ]
+  },
+  {
+   "id": "mp17",
+   "danish": "hvile / ville",
+   "english": "to rest / would",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_vowel_length",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "hvile",
+     "english": "to rest"
+    },
+    {
+     "danish": "ville",
+     "english": "would"
+    }
+   ]
+  },
+  {
+   "id": "mp18",
+   "danish": "bage / bakke",
+   "english": "to bake / hill",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_vowel_length",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "bage",
+     "english": "to bake"
+    },
+    {
+     "danish": "bakke",
+     "english": "hill"
+    }
+   ]
+  },
+  {
+   "id": "mp19",
+   "danish": "ro / lo",
+   "english": "calm / laughed",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_danish_r",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "ro",
+     "english": "calm"
+    },
+    {
+     "danish": "lo",
+     "english": "laughed"
+    }
+   ]
+  },
+  {
+   "id": "mp20",
+   "danish": "ris / is",
+   "english": "rice / ice",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_danish_r",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "ris",
+     "english": "rice"
+    },
+    {
+     "danish": "is",
+     "english": "ice"
+    }
+   ]
+  },
+  {
+   "id": "mp21",
+   "danish": "rig / lig",
+   "english": "rich / corpse",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_danish_r",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "rig",
+     "english": "rich"
+    },
+    {
+     "danish": "lig",
+     "english": "corpse"
+    }
+   ]
+  },
+  {
+   "id": "mp22",
+   "danish": "rå / lå",
+   "english": "raw / lay",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_danish_r",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "rå",
+     "english": "raw"
+    },
+    {
+     "danish": "lå",
+     "english": "lay"
+    }
+   ]
+  },
+  {
+   "id": "mp23",
+   "danish": "rede / lede",
+   "english": "nest / to search",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_danish_r",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "rede",
+     "english": "nest"
+    },
+    {
+     "danish": "lede",
+     "english": "to search"
+    }
+   ]
+  },
+  {
+   "id": "mp24",
+   "danish": "syg / sig",
+   "english": "sick / say",
+   "target_sounds": [
+    "front_rounded"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_front_rounded",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "syg",
+     "english": "sick"
+    },
+    {
+     "danish": "sig",
+     "english": "say"
+    }
+   ]
+  },
+  {
+   "id": "mp25",
+   "danish": "øl / el",
+   "english": "beer / electricity",
+   "target_sounds": [
+    "front_rounded"
+   ],
+   "level": 1,
+   "type": "minimal_pair",
+   "tip_id": "tip_front_rounded",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "øl",
+     "english": "beer"
+    },
+    {
+     "danish": "el",
+     "english": "electricity"
+    }
+   ]
+  },
+  {
+   "id": "mp26",
+   "danish": "søn / sen",
+   "english": "son / late",
+   "target_sounds": [
+    "front_rounded"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_front_rounded",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "søn",
+     "english": "son"
+    },
+    {
+     "danish": "sen",
+     "english": "late"
+    }
+   ]
+  },
+  {
+   "id": "mp27",
+   "danish": "før / for",
+   "english": "before / for",
+   "target_sounds": [
+    "front_rounded"
+   ],
+   "level": 2,
+   "type": "minimal_pair",
+   "tip_id": "tip_front_rounded",
+   "category": "minimal_pair",
+   "pair": [
+    {
+     "danish": "før",
+     "english": "before"
+    },
+    {
+     "danish": "for",
+     "english": "for"
+    }
+   ]
+  },
+  {
+   "id": "w001",
+   "danish": "hej",
+   "english": "hi",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "phrase",
+   "tip_id": "tip_vowel_quality",
+   "category": "greeting"
+  },
+  {
+   "id": "w002",
+   "danish": "hej hej",
+   "english": "bye",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "phrase",
+   "tip_id": "tip_vowel_quality",
+   "category": "greeting"
+  },
+  {
+   "id": "w003",
+   "danish": "godmorgen",
+   "english": "good morning",
+   "target_sounds": [
+    "danish_r",
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "greeting"
+  },
+  {
+   "id": "w004",
+   "danish": "goddag",
+   "english": "hello (good day)",
+   "target_sounds": [
+    "stod",
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "phrase",
+   "tip_id": "tip_stod",
+   "category": "greeting"
+  },
+  {
+   "id": "w005",
+   "danish": "godaften",
+   "english": "good evening",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "phrase",
+   "tip_id": "tip_vowel_quality",
+   "category": "greeting"
+  },
+  {
+   "id": "w006",
+   "danish": "godnat",
+   "english": "good night",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "phrase",
+   "tip_id": "tip_vowel_quality",
+   "category": "greeting"
+  },
+  {
+   "id": "w007",
+   "danish": "farvel",
+   "english": "goodbye",
+   "target_sounds": [
+    "danish_r",
+    "stod"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "greeting"
+  },
+  {
+   "id": "w008",
+   "danish": "tak",
+   "english": "thanks",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_vowel_quality",
+   "category": "greeting"
+  },
+  {
+   "id": "w009",
+   "danish": "mange tak",
+   "english": "thanks a lot",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "phrase",
+   "tip_id": "tip_vowel_quality",
+   "category": "greeting"
+  },
+  {
+   "id": "w010",
+   "danish": "tusind tak",
+   "english": "thank you very much",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "phrase",
+   "tip_id": "tip_vowel_length",
+   "category": "greeting"
+  },
+  {
+   "id": "w011",
+   "danish": "selv tak",
+   "english": "you're welcome",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "phrase",
+   "tip_id": "tip_vowel_quality",
+   "category": "greeting"
+  },
+  {
+   "id": "w012",
+   "danish": "undskyld",
+   "english": "sorry / excuse me",
+   "target_sounds": [
+    "front_rounded",
+    "stod"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "greeting"
+  },
+  {
+   "id": "w013",
+   "danish": "ja",
+   "english": "yes",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_vowel_length",
+   "category": "basics"
+  },
+  {
+   "id": "w014",
+   "danish": "nej",
+   "english": "no",
+   "target_sounds": [
+    "stod",
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "basics"
+  },
+  {
+   "id": "w015",
+   "danish": "velkommen",
+   "english": "welcome",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_vowel_quality",
+   "category": "greeting"
+  },
+  {
+   "id": "w016",
+   "danish": "vi ses",
+   "english": "see you",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "phrase",
+   "tip_id": "tip_vowel_length",
+   "category": "greeting"
+  },
+  {
+   "id": "w017",
+   "danish": "hvordan har du det?",
+   "english": "how are you?",
+   "target_sounds": [
+    "danish_r",
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "greeting"
+  },
+  {
+   "id": "w018",
+   "danish": "jeg har det godt",
+   "english": "I'm fine",
+   "target_sounds": [
+    "danish_r",
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "greeting"
+  },
+  {
+   "id": "w019",
+   "danish": "en",
+   "english": "one",
+   "target_sounds": [
+    "stod",
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "number"
+  },
+  {
+   "id": "w020",
+   "danish": "to",
+   "english": "two",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_vowel_length",
+   "category": "number"
+  },
+  {
+   "id": "w021",
+   "danish": "tre",
+   "english": "three",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "number"
+  },
+  {
+   "id": "w022",
+   "danish": "fire",
+   "english": "four",
+   "target_sounds": [
+    "danish_r",
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "number"
+  },
+  {
+   "id": "w023",
+   "danish": "fem",
+   "english": "five",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "number"
+  },
+  {
+   "id": "w024",
+   "danish": "seks",
+   "english": "six",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_vowel_quality",
+   "category": "number"
+  },
+  {
+   "id": "w025",
+   "danish": "syv",
+   "english": "seven",
+   "target_sounds": [
+    "front_rounded",
+    "stod"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "number"
+  },
+  {
+   "id": "w026",
+   "danish": "otte",
+   "english": "eight",
+   "target_sounds": [
+    "vowel_quality",
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_vowel_quality",
+   "category": "number"
+  },
+  {
+   "id": "w027",
+   "danish": "ni",
+   "english": "nine",
+   "target_sounds": [
+    "stod",
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "number"
+  },
+  {
+   "id": "w028",
+   "danish": "ti",
+   "english": "ten",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "number"
+  },
+  {
+   "id": "w029",
+   "danish": "elleve",
+   "english": "eleven",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_vowel_quality",
+   "category": "number"
+  },
+  {
+   "id": "w030",
+   "danish": "tolv",
+   "english": "twelve",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "number"
+  },
+  {
+   "id": "w031",
+   "danish": "tyve",
+   "english": "twenty",
+   "target_sounds": [
+    "front_rounded"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "number"
+  },
+  {
+   "id": "w032",
+   "danish": "hundrede",
+   "english": "hundred",
+   "target_sounds": [
+    "soft_d",
+    "danish_r"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "number"
+  },
+  {
+   "id": "w033",
+   "danish": "jeg",
+   "english": "I",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_vowel_quality",
+   "category": "basics"
+  },
+  {
+   "id": "w034",
+   "danish": "du",
+   "english": "you",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_vowel_quality",
+   "category": "basics"
+  },
+  {
+   "id": "w035",
+   "danish": "god",
+   "english": "good",
+   "target_sounds": [
+    "soft_d",
+    "stod",
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "basics"
+  },
+  {
+   "id": "w036",
+   "danish": "mad",
+   "english": "food",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "basics"
+  },
+  {
+   "id": "w037",
+   "danish": "rød",
+   "english": "red",
+   "target_sounds": [
+    "soft_d",
+    "front_rounded",
+    "danish_r"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "basics"
+  },
+  {
+   "id": "w038",
+   "danish": "hvid",
+   "english": "white",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "basics"
+  },
+  {
+   "id": "w039",
+   "danish": "glad",
+   "english": "happy",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "basics"
+  },
+  {
+   "id": "w040",
+   "danish": "hus",
+   "english": "house",
+   "target_sounds": [
+    "stod",
+    "vowel_length"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "basics"
+  },
+  {
+   "id": "w041",
+   "danish": "by",
+   "english": "city",
+   "target_sounds": [
+    "front_rounded",
+    "stod"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "basics"
+  },
+  {
+   "id": "w042",
+   "danish": "dansk",
+   "english": "Danish",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "basics"
+  },
+  {
+   "id": "w043",
+   "danish": "Danmark",
+   "english": "Denmark",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "basics"
+  },
+  {
+   "id": "w044",
+   "danish": "København",
+   "english": "Copenhagen",
+   "target_sounds": [
+    "front_rounded",
+    "stod"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "basics"
+  },
+  {
+   "id": "w045",
+   "danish": "hvor",
+   "english": "where",
+   "target_sounds": [
+    "danish_r",
+    "stod"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "basics"
+  },
+  {
+   "id": "w046",
+   "danish": "her",
+   "english": "here",
+   "target_sounds": [
+    "danish_r",
+    "stod"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "basics"
+  },
+  {
+   "id": "w047",
+   "danish": "nu",
+   "english": "now",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 1,
+   "type": "word",
+   "tip_id": "tip_vowel_quality",
+   "category": "basics"
+  },
+  {
+   "id": "w048",
+   "danish": "mandag",
+   "english": "Monday",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "day"
+  },
+  {
+   "id": "w049",
+   "danish": "tirsdag",
+   "english": "Tuesday",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "day"
+  },
+  {
+   "id": "w050",
+   "danish": "onsdag",
+   "english": "Wednesday",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "day"
+  },
+  {
+   "id": "w051",
+   "danish": "torsdag",
+   "english": "Thursday",
+   "target_sounds": [
+    "danish_r",
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "day"
+  },
+  {
+   "id": "w052",
+   "danish": "fredag",
+   "english": "Friday",
+   "target_sounds": [
+    "danish_r",
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "day"
+  },
+  {
+   "id": "w053",
+   "danish": "lørdag",
+   "english": "Saturday",
+   "target_sounds": [
+    "front_rounded",
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "day"
+  },
+  {
+   "id": "w054",
+   "danish": "søndag",
+   "english": "Sunday",
+   "target_sounds": [
+    "front_rounded"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "day"
+  },
+  {
+   "id": "w055",
+   "danish": "i dag",
+   "english": "today",
+   "target_sounds": [
+    "stod",
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_stod",
+   "category": "day"
+  },
+  {
+   "id": "w056",
+   "danish": "i morgen",
+   "english": "tomorrow",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "day"
+  },
+  {
+   "id": "w057",
+   "danish": "i går",
+   "english": "yesterday",
+   "target_sounds": [
+    "danish_r",
+    "stod"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "day"
+  },
+  {
+   "id": "w058",
+   "danish": "tid",
+   "english": "time",
+   "target_sounds": [
+    "soft_d",
+    "stod"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "day"
+  },
+  {
+   "id": "w059",
+   "danish": "at være",
+   "english": "to be",
+   "target_sounds": [
+    "danish_r",
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "verb"
+  },
+  {
+   "id": "w060",
+   "danish": "at have",
+   "english": "to have",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_vowel_length",
+   "category": "verb"
+  },
+  {
+   "id": "w061",
+   "danish": "at gå",
+   "english": "to walk / go",
+   "target_sounds": [
+    "stod",
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "verb"
+  },
+  {
+   "id": "w062",
+   "danish": "at spise",
+   "english": "to eat",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_vowel_length",
+   "category": "verb"
+  },
+  {
+   "id": "w063",
+   "danish": "at drikke",
+   "english": "to drink",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "verb"
+  },
+  {
+   "id": "w064",
+   "danish": "at tale",
+   "english": "to speak",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_vowel_length",
+   "category": "verb"
+  },
+  {
+   "id": "w065",
+   "danish": "at forstå",
+   "english": "to understand",
+   "target_sounds": [
+    "danish_r",
+    "stod"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "verb"
+  },
+  {
+   "id": "w066",
+   "danish": "at hedde",
+   "english": "to be called",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "verb"
+  },
+  {
+   "id": "w067",
+   "danish": "at bo",
+   "english": "to live (somewhere)",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "verb"
+  },
+  {
+   "id": "w068",
+   "danish": "at sige",
+   "english": "to say",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_vowel_length",
+   "category": "verb"
+  },
+  {
+   "id": "w069",
+   "danish": "at se",
+   "english": "to see",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "verb"
+  },
+  {
+   "id": "w070",
+   "danish": "at købe",
+   "english": "to buy",
+   "target_sounds": [
+    "front_rounded",
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "verb"
+  },
+  {
+   "id": "w071",
+   "danish": "at betale",
+   "english": "to pay",
+   "target_sounds": [
+    "vowel_length",
+    "stod"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_vowel_length",
+   "category": "verb"
+  },
+  {
+   "id": "w072",
+   "danish": "at hjælpe",
+   "english": "to help",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_vowel_quality",
+   "category": "verb"
+  },
+  {
+   "id": "w073",
+   "danish": "at vide",
+   "english": "to know",
+   "target_sounds": [
+    "soft_d",
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "verb"
+  },
+  {
+   "id": "w074",
+   "danish": "at lære",
+   "english": "to learn",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "verb"
+  },
+  {
+   "id": "w075",
+   "danish": "at bruge",
+   "english": "to use",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "verb"
+  },
+  {
+   "id": "w076",
+   "danish": "at høre",
+   "english": "to hear",
+   "target_sounds": [
+    "front_rounded",
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "verb"
+  },
+  {
+   "id": "w077",
+   "danish": "at lave",
+   "english": "to make",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_vowel_length",
+   "category": "verb"
+  },
+  {
+   "id": "w078",
+   "danish": "at ringe",
+   "english": "to call (phone)",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "verb"
+  },
+  {
+   "id": "w079",
+   "danish": "kaffe",
+   "english": "coffee",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_vowel_quality",
+   "category": "cafe"
+  },
+  {
+   "id": "w080",
+   "danish": "te",
+   "english": "tea",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "cafe"
+  },
+  {
+   "id": "w081",
+   "danish": "vand",
+   "english": "water",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "cafe"
+  },
+  {
+   "id": "w082",
+   "danish": "øl",
+   "english": "beer",
+   "target_sounds": [
+    "front_rounded"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "cafe"
+  },
+  {
+   "id": "w083",
+   "danish": "brød",
+   "english": "bread",
+   "target_sounds": [
+    "soft_d",
+    "front_rounded",
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "cafe"
+  },
+  {
+   "id": "w084",
+   "danish": "mælk",
+   "english": "milk",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_stod",
+   "category": "cafe"
+  },
+  {
+   "id": "w085",
+   "danish": "sukker",
+   "english": "sugar",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "cafe"
+  },
+  {
+   "id": "w086",
+   "danish": "en kop kaffe",
+   "english": "a cup of coffee",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_vowel_quality",
+   "category": "cafe"
+  },
+  {
+   "id": "w087",
+   "danish": "et glas vand",
+   "english": "a glass of water",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_stod",
+   "category": "cafe"
+  },
+  {
+   "id": "w088",
+   "danish": "regningen, tak",
+   "english": "the bill, please",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "cafe"
+  },
+  {
+   "id": "w089",
+   "danish": "hvad koster det?",
+   "english": "how much is it?",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_soft_d",
+   "category": "shop"
+  },
+  {
+   "id": "w090",
+   "danish": "en pose",
+   "english": "a bag",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_vowel_length",
+   "category": "shop"
+  },
+  {
+   "id": "w091",
+   "danish": "kvittering",
+   "english": "receipt",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "shop"
+  },
+  {
+   "id": "w092",
+   "danish": "billig",
+   "english": "cheap",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_vowel_quality",
+   "category": "shop"
+  },
+  {
+   "id": "w093",
+   "danish": "dyr",
+   "english": "expensive",
+   "target_sounds": [
+    "front_rounded",
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "shop"
+  },
+  {
+   "id": "w094",
+   "danish": "møde",
+   "english": "meeting",
+   "target_sounds": [
+    "soft_d",
+    "front_rounded"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "work"
+  },
+  {
+   "id": "w095",
+   "danish": "kollega",
+   "english": "colleague",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_vowel_quality",
+   "category": "work"
+  },
+  {
+   "id": "w096",
+   "danish": "kontor",
+   "english": "office",
+   "target_sounds": [
+    "danish_r",
+    "stod"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "work"
+  },
+  {
+   "id": "w097",
+   "danish": "frokost",
+   "english": "lunch",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "work"
+  },
+  {
+   "id": "w098",
+   "danish": "chef",
+   "english": "boss",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_vowel_length",
+   "category": "work"
+  },
+  {
+   "id": "w099",
+   "danish": "opgave",
+   "english": "task",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_vowel_length",
+   "category": "work"
+  },
+  {
+   "id": "w100",
+   "danish": "spørgsmål",
+   "english": "question",
+   "target_sounds": [
+    "front_rounded",
+    "danish_r"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "work"
+  },
+  {
+   "id": "w101",
+   "danish": "fri",
+   "english": "off (not working)",
+   "target_sounds": [
+    "danish_r",
+    "stod"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "work"
+  },
+  {
+   "id": "w102",
+   "danish": "travl",
+   "english": "busy",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "work"
+  },
+  {
+   "id": "w103",
+   "danish": "ferie",
+   "english": "holiday",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_danish_r",
+   "category": "work"
+  },
+  {
+   "id": "w104",
+   "danish": "meget",
+   "english": "very / much",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "basics"
+  },
+  {
+   "id": "w105",
+   "danish": "selvfølgelig",
+   "english": "of course",
+   "target_sounds": [
+    "front_rounded"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_front_rounded",
+   "category": "basics"
+  },
+  {
+   "id": "w106",
+   "danish": "smørrebrød",
+   "english": "open sandwich",
+   "target_sounds": [
+    "soft_d",
+    "front_rounded",
+    "danish_r"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "cafe"
+  },
+  {
+   "id": "w107",
+   "danish": "gade",
+   "english": "street",
+   "target_sounds": [
+    "soft_d",
+    "vowel_length"
+   ],
+   "level": 3,
+   "type": "word",
+   "tip_id": "tip_soft_d",
+   "category": "basics"
+  },
+  {
+   "id": "s01",
+   "danish": "Hvad hedder du?",
+   "english": "What's your name?",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_soft_d",
+   "category": "sentence"
+  },
+  {
+   "id": "s02",
+   "danish": "Jeg taler lidt dansk.",
+   "english": "I speak a little Danish.",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_stod",
+   "category": "sentence"
+  },
+  {
+   "id": "s03",
+   "danish": "Jeg forstår det ikke.",
+   "english": "I don't understand.",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "sentence"
+  },
+  {
+   "id": "s04",
+   "danish": "Kan du tale langsommere?",
+   "english": "Can you speak more slowly?",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_vowel_length",
+   "category": "sentence"
+  },
+  {
+   "id": "s05",
+   "danish": "Hvor er toilettet?",
+   "english": "Where is the toilet?",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "sentence"
+  },
+  {
+   "id": "s06",
+   "danish": "Jeg bor i København.",
+   "english": "I live in Copenhagen.",
+   "target_sounds": [
+    "front_rounded",
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_front_rounded",
+   "category": "sentence"
+  },
+  {
+   "id": "s07",
+   "danish": "Jeg vil gerne have en kaffe.",
+   "english": "I would like a coffee.",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "sentence"
+  },
+  {
+   "id": "s08",
+   "danish": "Må jeg få regningen?",
+   "english": "Can I have the bill?",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "sentence"
+  },
+  {
+   "id": "s09",
+   "danish": "Har du en pose?",
+   "english": "Do you have a bag?",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_vowel_length",
+   "category": "sentence"
+  },
+  {
+   "id": "s10",
+   "danish": "Kan jeg betale med kort?",
+   "english": "Can I pay by card?",
+   "target_sounds": [
+    "soft_d",
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_soft_d",
+   "category": "sentence"
+  },
+  {
+   "id": "s11",
+   "danish": "Vi ses i morgen.",
+   "english": "See you tomorrow.",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "sentence"
+  },
+  {
+   "id": "s12",
+   "danish": "Jeg lærer dansk.",
+   "english": "I'm learning Danish.",
+   "target_sounds": [
+    "danish_r",
+    "stod"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "sentence"
+  },
+  {
+   "id": "s13",
+   "danish": "Hav en god dag.",
+   "english": "Have a nice day.",
+   "target_sounds": [
+    "soft_d",
+    "stod"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_soft_d",
+   "category": "sentence"
+  },
+  {
+   "id": "s14",
+   "danish": "Tak for i dag.",
+   "english": "Thanks for today.",
+   "target_sounds": [
+    "stod"
+   ],
+   "level": 2,
+   "type": "phrase",
+   "tip_id": "tip_stod",
+   "category": "sentence"
+  },
+  {
+   "id": "s15",
+   "danish": "Hvad er klokken?",
+   "english": "What time is it?",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 3,
+   "type": "phrase",
+   "tip_id": "tip_soft_d",
+   "category": "sentence"
+  },
+  {
+   "id": "s16",
+   "danish": "Jeg arbejder på et kontor.",
+   "english": "I work in an office.",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 3,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "sentence"
+  },
+  {
+   "id": "s17",
+   "danish": "Vi har et møde klokken ti.",
+   "english": "We have a meeting at ten.",
+   "target_sounds": [
+    "soft_d",
+    "front_rounded"
+   ],
+   "level": 3,
+   "type": "phrase",
+   "tip_id": "tip_soft_d",
+   "category": "sentence"
+  },
+  {
+   "id": "s18",
+   "danish": "Det regner i dag.",
+   "english": "It's raining today.",
+   "target_sounds": [
+    "danish_r",
+    "stod"
+   ],
+   "level": 3,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "sentence"
+  },
+  {
+   "id": "s19",
+   "danish": "Undskyld, jeg er forsinket.",
+   "english": "Sorry, I'm late.",
+   "target_sounds": [
+    "front_rounded",
+    "danish_r"
+   ],
+   "level": 3,
+   "type": "phrase",
+   "tip_id": "tip_front_rounded",
+   "category": "sentence"
+  },
+  {
+   "id": "s20",
+   "danish": "Jeg skal på arbejde.",
+   "english": "I'm going to work.",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 3,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "sentence"
+  },
+  {
+   "id": "s21",
+   "danish": "Bussen kommer nu.",
+   "english": "The bus is coming now.",
+   "target_sounds": [
+    "vowel_quality"
+   ],
+   "level": 3,
+   "type": "phrase",
+   "tip_id": "tip_vowel_quality",
+   "category": "sentence"
+  },
+  {
+   "id": "s22",
+   "danish": "Jeg er træt.",
+   "english": "I'm tired.",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "level": 3,
+   "type": "phrase",
+   "tip_id": "tip_danish_r",
+   "category": "sentence"
+  },
+  {
+   "id": "s23",
+   "danish": "Maden er god.",
+   "english": "The food is good.",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "level": 3,
+   "type": "phrase",
+   "tip_id": "tip_soft_d",
+   "category": "sentence"
+  },
+  {
+   "id": "s24",
+   "danish": "Jeg er ny i Danmark.",
+   "english": "I'm new in Denmark.",
+   "target_sounds": [
+    "front_rounded",
+    "danish_r"
+   ],
+   "level": 3,
+   "type": "phrase",
+   "tip_id": "tip_front_rounded",
+   "category": "sentence"
+  },
+  {
+   "id": "s25",
+   "danish": "Rødgrød med fløde.",
+   "english": "Red berry pudding with cream.",
+   "target_sounds": [
+    "soft_d",
+    "front_rounded",
+    "danish_r"
+   ],
+   "level": 3,
+   "type": "phrase",
+   "tip_id": "tip_soft_d",
+   "category": "sentence"
+  }
+ ]
+}
