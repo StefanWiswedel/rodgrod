@@ -35,13 +35,13 @@ jobs:
       - name: Install JS dependencies
         run: npm ci
 
-      - name: Web tests (content validation, UI logic)
+      - name: Web UI logic tests
         run: npm test
 
       - name: Build web UI
         run: npm run build
 
-      - name: Core engine + scoring tool tests (JVM)
+      - name: Engine, content validation and scoring tool tests (JVM)
         run: |
           set -o pipefail
           ./gradlew --no-daemon :core:test :scoring-experiment:test 2>&1 | tee jvm-build.log
