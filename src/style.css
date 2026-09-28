@@ -14,7 +14,7 @@
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme='dark']) {
-    --bg: #f6f6f8; --card: #ffffff; --text: #16181d; --muted: #5d6573; --border: #dde0e6; color-scheme: light;
+    --bg: #f6f6f8; --card: #ffffff; --text: #16181d; --muted: #5d6573; --border: #dde0e6; --accent-2: #b8322f; color-scheme: light;
   }
 }
 * { box-sizing: border-box; }
@@ -89,7 +89,7 @@ nav#tabs {
   position: fixed; left: 0; right: 0; bottom: 0; display: flex; background: var(--card); border-top: 1px solid var(--border);
   padding-bottom: env(safe-area-inset-bottom);
 }
-nav#tabs button { flex: 1; margin: 0; border-radius: 0; background: transparent; color: var(--muted); min-height: 60px; font-size: 0.9rem; }
+nav#tabs button { flex: 1 1 0; min-width: 0; margin: 0; padding: 8px 2px; border-radius: 0; background: transparent; color: var(--muted); min-height: 60px; font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 nav#tabs button.active { color: var(--accent); box-shadow: inset 0 3px 0 var(--accent); }
 
 .toast {
