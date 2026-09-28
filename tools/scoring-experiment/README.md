@@ -5,7 +5,7 @@ If they don't, per-item feedback in the app is noise, and we should know before 
 
 The tool runs your recordings through the **same scorer code the app uses** (`core/…/scoring`), then writes:
 
-- `out/scores.csv`: one row per file, with scores from both scorers.
+- `out/scores.csv`: one row per file, with the scores from each scorer.
 - `out/report.md`: careful vs anglicised means, paired differences, AUC, a suggested threshold, a per-sound breakdown and a plain-English verdict.
 
 Three scores are compared:
