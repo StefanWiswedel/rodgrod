@@ -38,7 +38,7 @@ _Last updated: overnight build, 2026-09-28._
 - **Content:** 159 items (27 minimal pairs, 107 words/phrases, 25 sentences) and 6 tips. Validated in tests.
 - **CI:** tests + debug APK on every push and PR (artifact `rodgrod-debug-apk`), and a signed release workflow on `v*.*.*` tags (needs your secrets).
 - **Docs:** README, DECISIONS (17 decisions), TESTING (automated plus a manual phone/car plan), ROADMAP.
-- **Tests:** 94 JVM tests (engine, store, scorers, content, tool) and 10 UI logic tests, all passing locally.
+- **Tests:** 96 JVM tests (engine, store, scorers, content, tool) and 10 UI logic tests, all passing locally and in CI. CI run #11 is green and produced `rodgrod-debug-apk` (~4 MB).
 
 ## 🔄 In progress / not verified
 
