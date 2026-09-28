@@ -39,7 +39,9 @@ class SessionEngine(
 
     fun scorer(creds: AzureCredentials, s: Settings = settings()): Scorer {
         val stt = AzureStt(creds, http)
-        return if (s.scorer == Settings.SCORER_FALLBACK) AsrFallbackScorer(stt, s.bands) else PronunciationAssessmentScorer(stt, s.bands)
+        if (s.scorer == Settings.SCORER_FALLBACK) return AsrFallbackScorer(stt, s.bands)
+        val metric = if (s.paMetric == Settings.PA_ACCURACY) PronunciationAssessmentScorer.Metric.ACCURACY else PronunciationAssessmentScorer.Metric.PRON
+        return PronunciationAssessmentScorer(stt, s.bands, metric = metric)
     }
 
     fun hvptAnswers(creds: AzureCredentials) = HvptAnswerSource { wav -> HvptAnswerRecognizer(AzureStt(creds, http)).recognize(wav) }

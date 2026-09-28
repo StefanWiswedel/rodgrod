@@ -12,7 +12,7 @@ const status = (o: Partial<Status> = {}): Status => ({
 const defaults: Settings = {
   sessionMinutes: 10, hvptSeconds: 120, newShare: 0.3, maxNewPerSession: 12, maxSoundShare: 0.4, retrievalPauseMs: 3000,
   silenceMs: 1200, maxAttemptMs: 8000, minSpeechMs: 250, noSpeechTimeoutMs: 7000, bandGood: 80, bandClose: 60,
-  keepRecordings: 50, scorer: 'azure-pa', slowRatePercent: -30, includeMultilingualVoices: false,
+  keepRecordings: 50, scorer: 'azure-pa', paMetric: 'pron', slowRatePercent: -30, includeMultilingualVoices: false,
   englishVoice: 'en-GB-SoniaNeural', hvptTrialsPerBlock: 6,
 };
 
@@ -78,12 +78,13 @@ describe('homeView', () => {
 
 describe('settings form', () => {
   it('parses valid values', () => {
-    const r = parseSettings({ silenceMs: '900', newShare: '0.25', includeMultilingualVoices: true, scorer: 'asr-edit-distance' }, defaults);
+    const r = parseSettings({ silenceMs: '900', newShare: '0.25', includeMultilingualVoices: true, scorer: 'asr-edit-distance', paMetric: 'accuracy' }, defaults);
     expect(r.errors).toEqual([]);
     expect(r.settings.silenceMs).toBe(900);
     expect(r.settings.newShare).toBe(0.25);
     expect(r.settings.includeMultilingualVoices).toBe(true);
     expect(r.settings.scorer).toBe('asr-edit-distance');
+    expect(r.settings.paMetric).toBe('accuracy');
   });
   it('rejects bad values and keeps the old ones', () => {
     const r = parseSettings({ silenceMs: '10', sessionMinutes: 'abc', maxNewPerSession: '2.5', bandGood: '50', bandClose: '70' }, defaults);

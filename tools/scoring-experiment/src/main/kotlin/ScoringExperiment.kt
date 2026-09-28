@@ -68,6 +68,7 @@ fun main(argv: Array<String>) {
     val outDir = File(valueOf(args, "--out") ?: File(toolDir, "out").path).apply { mkdirs() }
     val bands = valueOf(args, "--bands")?.split(',')?.let { Bands(it[0].trim().toInt(), it[1].trim().toInt()) } ?: Bands()
     val withFallback = !args.contains("--no-fallback")
+    currentBands = bands
 
     val stt = AzureStt(creds)
     val scorers = buildList<Scorer> {
@@ -79,9 +80,10 @@ fun main(argv: Array<String>) {
     if (rows.isEmpty()) fail("Nothing scored.")
 
     val csv = File(outDir, "scores.csv")
-    csv.writeText(toCsv(rows, scorers.map { it.name }), Charsets.UTF_8)
+    val names = rows.first().results.keys.toList()
+    csv.writeText(toCsv(rows, names), Charsets.UTF_8)
     val report = File(outDir, "report.md")
-    report.writeText(Report.build(rows, scorers.map { it.name }, bands), Charsets.UTF_8)
+    report.writeText(Report.build(rows, names, bands), Charsets.UTF_8)
     println("\nWrote ${csv.path}\nWrote ${report.path}\n")
     println(report.readText())
 }
@@ -100,12 +102,31 @@ fun scoreFolder(folder: File, words: Map<String, WordInfo>, scorers: List<Scorer
         val wav16k = try { Resampler.toSttWav(f.readBytes()) } catch (e: Exception) { log("cannot read: ${e.message}\n"); continue }
         val dur = (wav16k.size - 44) / 2.0 / 16000
         if (dur > 30) log("(warning: ${"%.1f".format(dur)} s > 30 s limit for pronunciation assessment) ")
-        val results = scorers.associate { s -> s.name to s.score(ScoreRequest(danish, wav16k)) }
+        val results = LinkedHashMap<String, ScoreOutcome>()
+        for (s in scorers) {
+            val o = s.score(ScoreRequest(danish, wav16k))
+            results[s.name] = o
+            // Same PA response, scored on AccuracyScore alone (no extra API call).
+            if (s is PronunciationAssessmentScorer) results[ACCURACY_VARIANT] = accuracyVariant(o)
+        }
         log(results.entries.joinToString("  ") { (k, v) -> "$k=" + describe(v) } + "\n")
         rows += Row(f.name, slug, danish, cond, info?.sounds ?: emptyList(), dur, results)
     }
     return rows
 }
+
+const val ACCURACY_VARIANT = "azure-pa-accuracy"
+
+fun accuracyVariant(o: ScoreOutcome): ScoreOutcome {
+    if (o !is ScoreOutcome.Scored) return o
+    val acc = o.details.optDouble("accuracy", Double.NaN)
+    if (acc.isNaN()) return o.copy(scorer = ACCURACY_VARIANT)
+    val score = Math.round(acc).toInt().coerceIn(0, 100)
+    return o.copy(score = score, band = currentBands.of(score), scorer = ACCURACY_VARIANT)
+}
+
+/** Bands used for the derived accuracy variant (set from --bands). */
+var currentBands = Bands()
 
 private fun describe(o: ScoreOutcome) = when (o) {
     is ScoreOutcome.Scored -> "${o.score}(${o.band.name.lowercase()}${if (o.reliable) "" else ",unreliable"})"

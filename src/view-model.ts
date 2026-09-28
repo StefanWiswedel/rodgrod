@@ -188,6 +188,7 @@ export function parseSettings(values: Record<string, string | boolean>, base: Se
   }
   if (typeof values.includeMultilingualVoices === 'boolean') out.includeMultilingualVoices = values.includeMultilingualVoices;
   if (values.scorer === 'azure-pa' || values.scorer === 'asr-edit-distance') out.scorer = values.scorer;
+  if (values.paMetric === 'pron' || values.paMetric === 'accuracy') out.paMetric = values.paMetric;
   if (typeof values.englishVoice === 'string' && values.englishVoice.trim()) out.englishVoice = values.englishVoice.trim();
   if (out.bandClose > out.bandGood) errors.push('"Close" must not be above "Good"');
   return { settings: out, errors };

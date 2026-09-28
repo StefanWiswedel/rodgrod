@@ -33,6 +33,12 @@ class ScoringExperimentTest {
         assertEquals(80.0, Stats.bestThreshold(listOf(90.0, 80.0), listOf(10.0, 20.0)).first, 1e-9)
     }
 
+    @Test fun accuracyVariantRescoresFromDetails() {
+        val o = ScoreOutcome.Scored(90, Band.GOOD, true, "azure-pa", "mad", org.json.JSONObject().put("accuracy", 55.4))
+        val v = accuracyVariant(o) as ScoreOutcome.Scored
+        assertEquals(55, v.score); assertEquals(Band.RETRY, v.band); assertEquals(ACCURACY_VARIANT, v.scorer)
+    }
+
     @Test fun endToEndWithFakeScorer() {
         val dir = Files.createTempDirectory("rec").toFile()
         val tone = Wav.encode(Pcm(Synth.tone(200.0, 400, 44100), 44100))

@@ -99,8 +99,12 @@ class PronunciationAssessmentScorer(
     private val stt: AzureStt,
     private val bands: Bands,
     private val locale: String = "da-DK",
+    /** Which Azure number becomes the 0–100 score: overall PronScore (default) or pure AccuracyScore. */
+    private val metric: Metric = Metric.PRON,
 ) : Scorer {
-    override val name = "azure-pa"
+    enum class Metric { PRON, ACCURACY }
+
+    override val name = if (metric == Metric.PRON) "azure-pa" else "azure-pa-accuracy"
 
     override fun score(req: ScoreRequest): ScoreOutcome {
         val rec = try {
@@ -108,11 +112,11 @@ class PronunciationAssessmentScorer(
         } catch (e: ServiceUnavailableException) {
             return ScoreOutcome.Unavailable(e.message ?: "unavailable", e.configProblem)
         }
-        return interpret(rec, bands, name)
+        return interpret(rec, bands, name, metric)
     }
 
     companion object {
-        fun interpret(rec: Recognition, bands: Bands, name: String = "azure-pa"): ScoreOutcome.Scored {
+        fun interpret(rec: Recognition, bands: Bands, name: String = "azure-pa", metric: Metric = Metric.PRON): ScoreOutcome.Scored {
             val best = rec.best
             if (!rec.success || best == null) {
                 // Speech was detected locally but Azure recognised nothing: count it as a miss, but not a reliable one.
@@ -126,6 +130,7 @@ class PronunciationAssessmentScorer(
             val completeness = pa.optDouble("CompletenessScore", Double.NaN)
             val pron = pa.optDouble("PronScore", Double.NaN)
             val raw = when {
+                metric == Metric.ACCURACY && !accuracy.isNaN() -> accuracy
                 !pron.isNaN() -> pron
                 !accuracy.isNaN() -> accuracy
                 else -> 0.0

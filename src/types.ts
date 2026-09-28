@@ -53,6 +53,7 @@ export interface Settings {
   bandClose: number;
   keepRecordings: number;
   scorer: 'azure-pa' | 'asr-edit-distance';
+  paMetric: 'pron' | 'accuracy';
   slowRatePercent: number;
   includeMultilingualVoices: boolean;
   englishVoice: string;

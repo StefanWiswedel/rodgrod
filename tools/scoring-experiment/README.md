@@ -8,10 +8,11 @@ The tool runs your recordings through the **same scorer code the app uses** (`co
 - `out/scores.csv`: one row per file, with scores from both scorers.
 - `out/report.md`: careful vs anglicised means, paired differences, AUC, a suggested threshold, a per-sound breakdown and a plain-English verdict.
 
-Two scorers are compared:
+Three scores are compared:
 
-1. `azure-pa`: Azure Pronunciation Assessment for da-DK (the app's default).
-2. `asr-edit-distance`: da-DK speech-to-text compared to the target text by edit distance, plus an en-US "anglicised" side signal (the fallback). Turn it off with `--no-fallback`.
+1. `azure-pa`: Azure Pronunciation Assessment for da-DK, using the overall `PronScore` (the app's default).
+2. `azure-pa-accuracy`: the same Azure response, using `AccuracyScore` only. It costs no extra API call. For isolated words, `PronScore` also blends in fluency and completeness, which can hide pronunciation differences; if this variant separates better, pick "Accuracy only" in the app's Settings.
+3. `asr-edit-distance`: da-DK speech-to-text compared to the target text by edit distance, plus an en-US "anglicised" side signal (the fallback). Turn it off with `--no-fallback`.
 
 ## 1. Record (about 10 minutes)
 

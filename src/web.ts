@@ -7,7 +7,7 @@ import type { Recording, SessionSnapshot, Settings, Stats, Status } from './type
 const DEFAULTS: Settings = {
   sessionMinutes: 10, hvptSeconds: 120, newShare: 0.3, maxNewPerSession: 12, maxSoundShare: 0.4, retrievalPauseMs: 3000,
   silenceMs: 1200, maxAttemptMs: 8000, minSpeechMs: 250, noSpeechTimeoutMs: 7000, bandGood: 80, bandClose: 60,
-  keepRecordings: 50, scorer: 'azure-pa', slowRatePercent: -30, includeMultilingualVoices: false,
+  keepRecordings: 50, scorer: 'azure-pa', paMetric: 'pron', slowRatePercent: -30, includeMultilingualVoices: false,
   englishVoice: 'en-GB-SoniaNeural', hvptTrialsPerBlock: 6,
 };
 

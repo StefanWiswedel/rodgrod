@@ -22,6 +22,8 @@ data class Settings(
     /** Raw recordings kept for inspection (pending, unscored recordings are always kept). */
     val keepRecordings: Int = 50,
     val scorer: String = SCORER_PA,
+    /** For the PA scorer: "pron" (PronScore, blends accuracy/fluency/completeness) or "accuracy" (AccuracyScore only). */
+    val paMetric: String = PA_PRON,
     val slowRatePercent: Int = -30,
     val includeMultilingualVoices: Boolean = false,
     val englishVoice: String = "en-GB-SoniaNeural",
@@ -42,7 +44,7 @@ data class Settings(
         .put("retrievalPauseMs", retrievalPauseMs).put("silenceMs", silenceMs).put("maxAttemptMs", maxAttemptMs)
         .put("minSpeechMs", minSpeechMs).put("noSpeechTimeoutMs", noSpeechTimeoutMs)
         .put("bandGood", bandGood).put("bandClose", bandClose).put("keepRecordings", keepRecordings)
-        .put("scorer", scorer).put("slowRatePercent", slowRatePercent)
+        .put("scorer", scorer).put("paMetric", paMetric).put("slowRatePercent", slowRatePercent)
         .put("includeMultilingualVoices", includeMultilingualVoices).put("englishVoice", englishVoice)
         .put("hvptTrialsPerBlock", hvptTrialsPerBlock)
 
@@ -62,6 +64,7 @@ data class Settings(
         if (!(bandClose in 0..bandGood && bandGood <= 100)) e += "bands need 0 ≤ close ≤ good ≤ 100"
         if (keepRecordings !in 0..1000) e += "keepRecordings must be 0–1000"
         if (scorer !in listOf(SCORER_PA, SCORER_FALLBACK)) e += "scorer must be $SCORER_PA or $SCORER_FALLBACK"
+        if (paMetric !in listOf(PA_PRON, PA_ACCURACY)) e += "paMetric must be $PA_PRON or $PA_ACCURACY"
         if (slowRatePercent !in -60..0) e += "slowRatePercent must be -60–0"
         if (hvptTrialsPerBlock !in 2..20) e += "hvptTrialsPerBlock must be 2–20"
         return e
@@ -70,6 +73,8 @@ data class Settings(
     companion object {
         const val SCORER_PA = "azure-pa"
         const val SCORER_FALLBACK = "asr-edit-distance"
+        const val PA_PRON = "pron"
+        const val PA_ACCURACY = "accuracy"
 
         fun fromJson(o: JSONObject?): Settings {
             val d = Settings()
@@ -89,6 +94,7 @@ data class Settings(
                 bandClose = o.optInt("bandClose", d.bandClose),
                 keepRecordings = o.optInt("keepRecordings", d.keepRecordings),
                 scorer = o.optString("scorer", d.scorer),
+                paMetric = o.optString("paMetric", d.paMetric),
                 slowRatePercent = o.optInt("slowRatePercent", d.slowRatePercent),
                 includeMultilingualVoices = o.optBoolean("includeMultilingualVoices", d.includeMultilingualVoices),
                 englishVoice = o.optString("englishVoice", d.englishVoice),

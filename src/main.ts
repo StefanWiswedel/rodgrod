@@ -263,12 +263,18 @@ async function renderSettings(): Promise<HTMLElement> {
     h('option', { value: 'azure-pa', selected: s.scorer === 'azure-pa' }, 'Azure Pronunciation Assessment (recommended)'),
     h('option', { value: 'asr-edit-distance', selected: s.scorer === 'asr-edit-distance' }, 'Fallback: transcription + edit distance'),
   );
+  const paMetric = h('select', { id: 'paMetric' },
+    h('option', { value: 'pron', selected: s.paMetric === 'pron' }, 'Overall pronunciation score (PronScore)'),
+    h('option', { value: 'accuracy', selected: s.paMetric === 'accuracy' }, 'Accuracy only (AccuracyScore)'),
+  );
   const multi = h('input', { type: 'checkbox', id: 'multi', checked: s.includeMultilingualVoices });
   const englishVoice = h('input', { type: 'text', id: 'englishVoice', value: s.englishVoice });
   const err = h('div', { class: 'error-text' });
 
   const save = async () => {
-    const values: Record<string, string | boolean> = { scorer: scorer.value, includeMultilingualVoices: multi.checked, englishVoice: englishVoice.value };
+    const values: Record<string, string | boolean> = {
+      scorer: scorer.value, paMetric: paMetric.value, includeMultilingualVoices: multi.checked, englishVoice: englishVoice.value,
+    };
     for (const [k, el] of Object.entries(inputs)) values[k] = el.value;
     const { settings, errors } = parseSettings(values, s);
     err.textContent = errors.join('\n');
@@ -282,6 +288,7 @@ async function renderSettings(): Promise<HTMLElement> {
       h('h2', {}, 'Session'),
       ...fields,
       h('div', { class: 'field' }, h('label', { for: 'scorer' }, 'Scorer'), scorer),
+      h('div', { class: 'field' }, h('label', { for: 'paMetric' }, 'Score used (Pronunciation Assessment)'), paMetric),
       h('div', { class: 'field row' }, multi, h('label', { for: 'multi' }, 'Also use multilingual voices that speak Danish (more talkers, possible accent)')),
       h('div', { class: 'field' }, h('label', { for: 'englishVoice' }, 'English prompt voice'), englishVoice),
       err,

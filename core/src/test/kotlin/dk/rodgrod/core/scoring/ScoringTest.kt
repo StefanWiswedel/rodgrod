@@ -64,6 +64,13 @@ class PronunciationAssessmentTest {
         assertEquals(2, r.details.getJSONArray("words").length())
     }
 
+    @Test fun accuracyMetricUsesAccuracyScore() {
+        val r = PronunciationAssessmentScorer.interpret(Recognition("Success", JSONObject(PA_RESPONSE)), Bands(),
+            metric = PronunciationAssessmentScorer.Metric.ACCURACY)
+        assertEquals(72, r.score)
+        assertEquals(Band.CLOSE, r.band)
+    }
+
     @Test fun parsesNestedResponse() {
         val r = PronunciationAssessmentScorer.interpret(Recognition("Success", JSONObject(PA_RESPONSE_NESTED)), Bands())
         assertEquals(93, r.score); assertEquals(Band.GOOD, r.band)

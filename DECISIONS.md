@@ -13,7 +13,7 @@ Decisions made while building Phase 1 unattended. Each one says what was decided
   - For da-DK we get full-text and word-level `AccuracyScore`, `FluencyScore`, `CompletenessScore`, `PronScore`, and per-word `ErrorType` (miscue).
 - The REST short-audio API accepts PA via a base64 JSON `Pronunciation-Assessment` header. Audio must be 16 kHz mono PCM WAV, at most 30 s with PA.
 
-**Decision.** Score with PA (`GradingSystem=HundredMark`, `Granularity=Phoneme`, `Dimension=Comprehensive`, `EnableMiscue=True`). The score is `PronScore`, falling back to `AccuracyScore`. Band thresholds: good ≥ 80, close ≥ 60, retry below that (configurable).
+**Decision.** Score with PA (`GradingSystem=HundredMark`, `Granularity=Phoneme`, `Dimension=Comprehensive`, `EnableMiscue=True`). The score is `PronScore`, falling back to `AccuracyScore`. For isolated words `PronScore` also blends in fluency and completeness, so a setting switches to `AccuracyScore` alone, and Milestone 0 reports both so the choice can be made from data. Band thresholds: good ≥ 80, close ≥ 60, retry below that (configurable).
 
 The fallback scorer (da-DK STT + normalised edit distance weighted by recognition confidence, plus an en-US "anglicised" signal that is stored but never scored) is also built behind the same `Scorer` interface. The Milestone 0 tool compares both. A setting in the app can switch to it.
 
