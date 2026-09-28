@@ -162,6 +162,29 @@ class SessionRunnerTest {
         assertEquals(SessionStatus.COMPLETED, h.store.session(id)!!.status)
     }
 
+    @Test fun pauseDuringStartChimeIsHandled() {
+        val h = Harness()
+        val tak = h.content.items.first { it.danish == "tak" }
+        val out = object : AudioOutput by h.out {
+            var first = true
+            override fun earcon(e: Earcon) {
+                if (first) { first = false; h.control.requestPause() }
+                h.out.earcon(e)
+            }
+        }
+        val runner = SessionRunner(h.content, h.settings, h.store, h.clips, h.planner, h.voices, out, h.input, h.scorer,
+            { Answer.Choice(0, "one") }, h.recordings, h.clock, h.control) { h.snapshots += it }
+        val id = h.newSession(plan(h, Task.Production(tak.id, Mode.NEW)))
+        val t = Thread { runner.run(id) }
+        t.start()
+        val deadline = System.currentTimeMillis() + 5000
+        while (h.snapshots.none { it.state == RunState.PAUSED } && System.currentTimeMillis() < deadline) Thread.sleep(5)
+        h.control.resume()
+        t.join(5000)
+        assertEquals(SessionStatus.COMPLETED, h.store.session(id)!!.status)
+        assertEquals(1, h.store.sessionAttempts(id).size)
+    }
+
     @Test fun stopEndsSessionAndKeepsCompletedItems() {
         val h = Harness()
         val id = h.newSession()

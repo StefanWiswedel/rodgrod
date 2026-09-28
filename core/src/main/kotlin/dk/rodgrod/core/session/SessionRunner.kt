@@ -109,10 +109,11 @@ class SessionRunner(
         activeMs = row.activeMs
         segmentStart = clock.elapsedMs()
         try {
-            if (index == 0) out.earcon(Earcon.START)
+            var started = index > 0
             while (index < plan.tasks.size) {
                 if (elapsed() >= budgetMs) break
                 try {
+                    if (!started) { out.earcon(Earcon.START); started = true }
                     runTask(plan.tasks[index])
                 } catch (p: PauseRequested) {
                     discardUncommitted()
@@ -122,7 +123,8 @@ class SessionRunner(
                     if (!control.awaitResume()) throw StopRequested()
                     segmentStart = clock.elapsedMs()
                     emit(RunState.RUNNING, "resuming")
-                    out.pause(600)
+                    // Short gap before the item restarts; a new pause here is handled on the next loop pass.
+                    try { out.pause(600) } catch (_: PauseRequested) { }
                 }
             }
         } catch (s: StopRequested) {
