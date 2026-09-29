@@ -17,3 +17,6 @@ tools/scoring-experiment/credentials.properties
 .env.*
 jvm-build.log
 android-build.log
+# never commit the signing key or its base64 text
+key.txt
+*.b64
