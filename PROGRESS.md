@@ -5,11 +5,10 @@ _Last updated: overnight build, 2026-09-28._
 ## ☀️ What you need to do next
 
 1. ~~**Make `main`.**~~ Done: the repo now has a single `main` branch.
-2. **Scoring check (Milestone 0), about 6 minutes, in the app:** install the latest debug APK, then Settings → **Scoring check** → Start. Do it parked. At the end, tap **Apply suggested settings** if one is offered. If the verdict is "do not separate", tell me.
+2. **Scoring check (Milestone 0), about 6 minutes, in the app:** install the app from Releases (or, before step 3, the debug APK from Actions), then Settings → **Scoring check** → Start. Do it parked. At the end, tap **Apply suggested settings** if one is offered. If the verdict is "do not separate", tell me.
    (The command-line tool in `tools/scoring-experiment/` still works if you'd rather record WAV files yourself.)
-3. **Install the debug APK:** Actions → latest green "CI" run on `main` → artifact `rodgrod-debug-apk` → unzip → install. Then enter your Azure key and region on first launch.
+3. **Set up release signing (once, ~5 min):** follow README → *Releases* (create a keystore, add four secrets). From then on every change on `main` appears under **Releases** as an APK that updates in place and keeps your progress.
 4. **Run the manual test plan** in [TESTING.md](TESTING.md): phone speaker first, then the car. Note ✅/❌ per step.
-5. **Release signing (when you want a release APK):** follow README → *Releases* to create the keystore and add the four `RODGROD_*` secrets, then push a tag `v0.1.0`.
 6. **Skim the seed deck.** It is machine-generated and unverified. Wrong target-sound tags matter most, because they drive the weakness weighting.
 
 ## ✅ Done

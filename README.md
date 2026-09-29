@@ -24,8 +24,8 @@ You never press a button to end an attempt: the app notices when you start and s
 
 1. **Create an Azure Speech resource.** In the [Azure portal](https://portal.azure.com), create a *Speech service* resource. The free F0 tier is enough to start. Copy **Key 1** and the **region** (for example `westeurope`).
 2. **Install the app:**
-   - From a release: download `rodgrod-vX.Y.Z.apk` from GitHub Releases and open it on the phone (allow installing from your browser when asked).
-   - Or a debug build: GitHub → Actions → the latest green "CI" run → artifact `rodgrod-debug-apk`.
+   - From **Releases** (recommended): download the latest `rodgrod-v0.1.N.apk` and open it on the phone (allow installing from your browser when asked). Later releases install over it and keep your progress.
+   - Before the signing key is set up: a debug build from GitHub → Actions → latest green "CI" run → artifact `rodgrod-debug-apk`. Each debug build needs an uninstall first.
 3. **Open the app.** Enter the key and region, then tap **Check and save**. The app checks the key against Azure (it lists the Danish voices) and stores it encrypted on the phone.
 4. **Allow the microphone** (required) and **notifications** (recommended: the notification has the Stop button).
 5. Optional, on Wi-Fi: **Download all audio for offline** caches every clip for the whole deck.
@@ -118,7 +118,7 @@ Decks are `content/deck*.json`. Item fields:
 
 ## Releases (signed APK)
 
-Pushing a tag like `v0.1.0` runs `.github/workflows/android-release.yml`. It builds a signed release APK and attaches it to a GitHub Release. You need to set this up once.
+Every push to `main` (except docs-only changes) runs `.github/workflows/android-release.yml`, which builds a **signed** APK and publishes it under **Releases** (version `0.1.<build number>`). Always install from Releases: every release is signed with the same key, so each one installs as an update and keeps your progress. The debug APKs in Actions change signature on every build and would need an uninstall. You need to set up the key once:
 
 **1. Generate an upload keystore (on your computer, once).** Keep this file and its passwords safe and private. Losing it means future updates can't be installed over the old app.
 
@@ -149,13 +149,9 @@ base64 -i rodgrod-release.jks -o rodgrod-release.jks.b64     # macOS
 
 Or with the GitHub CLI: `gh secret set RODGROD_KEYSTORE_BASE64 < rodgrod-release.jks.b64`, and so on.
 
-**4. Release:**
+**4. Done.** The next push to `main` publishes a release. To publish now, open **Actions → Release (signed APK) → Run workflow**. You can also push a tag like `v1.0.0` for a named version.
 
-```bash
-git tag v0.1.0 && git push origin v0.1.0
-```
-
-The version name comes from the tag, and versionCode = major·10000 + minor·100 + patch. The workflow fails early, with a clear message, if a secret is missing. The keystore is decoded into the runner's temp directory and deleted afterwards. It is never committed (`*.jks`/`*.keystore` are git-ignored).
+versionCode is the workflow's run number, so it always increases. Until the secrets exist, pushes to `main` skip the release with a notice. The keystore is decoded into the runner's temp directory and deleted afterwards. It is never committed (`*.jks`/`*.keystore` are git-ignored).
 
 The debug APK is built on every push (including `main`) and on pull requests, as the workflow artifact `rodgrod-debug-apk`.
 
