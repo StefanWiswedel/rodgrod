@@ -66,8 +66,17 @@ async function refresh() {
 
 function renderSetup(): HTMLElement {
   const key = h('input', { type: 'password', id: 'key', autocomplete: 'off', placeholder: 'Azure Speech key', spellcheck: 'false' });
-  const region = h('input', { type: 'text', id: 'region', list: 'regions', placeholder: 'westeurope', value: status?.region ?? 'westeurope', autocapitalize: 'none' });
-  const list = h('datalist', { id: 'regions' }, ...AZURE_REGIONS.map((r) => h('option', { value: r })));
+  // Region: a dropdown of known regions, plus "Other" to type any region name.
+  const saved = status?.region ?? 'swedencentral';
+  const known = AZURE_REGIONS.some(([v]) => v === saved);
+  const regionSelect = h('select', { id: 'region' },
+    ...AZURE_REGIONS.map(([v, label]) => h('option', { value: v, selected: v === saved }, `${label} (${v})`)),
+    h('option', { value: 'other', selected: !known }, 'Other (type it)…'),
+  );
+  const regionOther = h('input', { type: 'text', id: 'regionOther', placeholder: 'e.g. southafricanorth', autocapitalize: 'none',
+    value: known ? '' : saved, style: known ? 'display:none' : '' });
+  regionSelect.addEventListener('change', () => { regionOther.style.display = regionSelect.value === 'other' ? '' : 'none'; });
+  const region = { get value() { return regionSelect.value === 'other' ? regionOther.value : regionSelect.value; } };
   const err = h('p', { class: 'error-text' });
   const save = async () => {
     const problem = validateCredentialsInput(key.value, region.value);
@@ -83,10 +92,10 @@ function renderSetup(): HTMLElement {
     h('h1', {}, 'Welcome'),
     h('p', {}, 'This app uses your own Azure Speech resource for Danish voices and pronunciation scoring.'),
     h('label', { for: 'key' }, 'Key'), key,
-    h('label', { for: 'region' }, 'Region'), region, list,
+    h('label', { for: 'region' }, 'Region'), regionSelect, regionOther,
     err,
     h('button', { class: 'primary big', onclick: save, disabled: !!busy }, busy || 'Check and save'),
-    h('p', { class: 'fine' }, 'The key is encrypted with the Android Keystore and stored only on this phone. It is sent only to Azure (', h('code', {}, `${region.value || 'region'}.*.speech.microsoft.com`), ').'),
+    h('p', { class: 'fine' }, 'The key is encrypted with the Android Keystore and stored only on this phone. It is sent only to Azure (your region\'s *.speech.microsoft.com servers).'),
   );
 }
 

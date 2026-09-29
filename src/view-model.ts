@@ -196,9 +196,13 @@ export function parseSettings(values: Record<string, string | boolean>, base: Se
   return { settings: out, errors };
 }
 
-export const AZURE_REGIONS = [
-  'westeurope', 'northeurope', 'swedencentral', 'uksouth', 'germanywestcentral', 'francecentral', 'norwayeast',
-  'eastus', 'eastus2', 'westus', 'westus2', 'centralus', 'southeastasia', 'australiaeast', 'japaneast', 'centralindia',
+/** Azure Speech regions offered in the setup dropdown (value, readable name). Any other region can be typed via "Other". */
+export const AZURE_REGIONS: [string, string][] = [
+  ['swedencentral', 'Sweden Central'], ['northeurope', 'North Europe (Ireland)'], ['westeurope', 'West Europe (Netherlands)'],
+  ['norwayeast', 'Norway East'], ['germanywestcentral', 'Germany West Central'], ['francecentral', 'France Central'],
+  ['switzerlandnorth', 'Switzerland North'], ['uksouth', 'UK South'], ['eastus', 'East US'], ['eastus2', 'East US 2'],
+  ['westus', 'West US'], ['westus2', 'West US 2'], ['centralus', 'Central US'], ['canadacentral', 'Canada Central'],
+  ['southeastasia', 'Southeast Asia'], ['australiaeast', 'Australia East'], ['japaneast', 'Japan East'], ['centralindia', 'Central India'],
 ];
 
 export function validateCredentialsInput(key: string, region: string): string | null {

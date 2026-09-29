@@ -22,7 +22,7 @@ You never press a button to end an attempt: the app notices when you start and s
 
 ## Setup (first time)
 
-1. **Create an Azure Speech resource.** In the [Azure portal](https://portal.azure.com), create a *Speech service* resource. The free F0 tier is enough to start. Copy **Key 1** and the **region** (for example `westeurope`).
+1. **Create an Azure Speech resource.** In the [Azure portal](https://portal.azure.com), create a *Speech service* resource. The free F0 tier is enough to start. Copy **Key 1** and the **region** (for example `swedencentral`; some regions such as West Europe may not accept new resources).
 2. **Install the app:**
    - From **Releases** (recommended): download the latest `rodgrod-v0.1.N.apk` and open it on the phone (allow installing from your browser when asked). Later releases install over it and keep your progress.
    - Before the signing key is set up: a debug build from GitHub → Actions → latest green "CI" run → artifact `rodgrod-debug-apk`. Each debug build needs an uninstall first.
