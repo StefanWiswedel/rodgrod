@@ -116,3 +116,13 @@ Vanilla TypeScript with no framework. The UI is five small screens, and fewer de
 ## D17. Scoring the "one/two" answers
 
 These are recognised with Azure en-US short-audio STT (the NBest list, lenient matching: "won", "to", "too"…). Offline, the first unanswered trial ends the listening drill for that session, with a neutral tick. HVPT answer audio is not stored.
+
+## D18. Milestone 0 moved into the app (Settings → Scoring check)
+
+Recording and naming 44 WAV files and running a script was too much friction. The app now runs the same check hands-free:
+- For each word in `content/calibration.json`: a Danish model → you repeat carefully; then an English voice reading the Danish spelling → you imitate it (the "anglicised" version).
+- The second attempt is the Danish word with an English accent, **not** the English translation. Scoring a translation against the Danish reference would prove nothing.
+- No feedback during the check, so it doesn't shape how you speak. Every attempt is scored once with Pronunciation Assessment; PronScore and AccuracyScore are both taken from the same response and both analysed.
+- The verdict uses the same statistics as the CLI tool (now shared in `core/calibration`): AUC, paired win rate, best threshold.
+- Suggestion (only when the better metric separates at least weakly): "close" starts at the best separating threshold (below it sounds English), "good" starts at the median careful score (at least 5 above close). Applying it switches the scorer to Pronunciation Assessment with that metric.
+- Caveat: the careful attempt comes right after the model, so it measures imitation (like the real sessions), not recall.

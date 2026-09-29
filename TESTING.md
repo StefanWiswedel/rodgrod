@@ -5,6 +5,7 @@
 | suite | command | covers |
 |---|---|---|
 | Engine (JVM) | `./gradlew :core:test` | VAD state machine on synthetic audio; Leitner scheduler; weakness tracking; session composition; level gate; scorer banding and Azure response parsing; content validation of the real deck; SQL store (on sqlite-jdbc); the session runner end-to-end with fake audio and mic (new/review flows, retry with slowed model, offline queue then delayed scoring, silence re-prompt, pause/resume mid-item, stop, crash then resume, time budget, HVPT feedback, tips, recording pruning, summary, level unlock) |
+| Scoring check | (in `:core:test`) | calibration report statistics, verdicts, suggested bands, and the hands-free check runner with fakes |
 | Scoring tool | `./gradlew :scoring-experiment:test` | file naming, word list, statistics, CSV/report generation with a fake scorer |
 | UI logic | `npm test` | view-model: status to screen mapping, formatting, settings validation, credential input checks |
 | Android build | `cd android && ./gradlew assembleDebug testDebugUnitTest lintDebug` | compiles the native layer against Android 36 and runs lint |
@@ -109,6 +110,15 @@ Record results as ✅ / ❌ plus a note. Anything ❌ → open an issue with the
 | 8.1 | Day 1: complete a session. Day 2: start one. | Mostly reviews of yesterday's items: English → pause → model → repeat. |
 | 8.2 | After ~3 good sessions with ≥80% "good", with most of level 1 introduced. | The summary announces level 2 unlocked. Level-2 items start appearing. |
 
-### 9. Milestone 0 scoring experiment
+### 9. Scoring check (Milestone 0, in the app)
 
-See [tools/scoring-experiment/README.md](tools/scoring-experiment/README.md). Record 22 words both ways and run the tool. If the verdict isn't "SEPARATES WELL", note it in PROGRESS.md and adjust the bands in Settings.
+| # | Steps | Expected |
+|---|---|---|
+| 9.1 | Parked, online: Settings → Scoring check → Start. | The app switches to Practice, prepares audio, then plays an intro. |
+| 9.2 | For each word, follow the prompts. | "In Danish." → Danish model → blip → you repeat carefully. "Now the English way." → an English voice reads the word → blip → you copy it. No score earcons. |
+| 9.3 | Let it finish (~6 min). | A spoken verdict. The Settings card shows the verdict, a table for "Overall score" and "Accuracy only", and possibly a suggestion. |
+| 9.4 | Tap *Apply suggested settings*. | Toast. The Session card shows the new "Good"/"Close" values and "Score used". |
+| 9.5 | Start the check offline. | Clear error that it needs the internet. |
+| 9.6 | Stop it halfway (notification Stop). | The card shows a partial result (or "too few"). |
+
+If the verdict isn't "separate well", note it in PROGRESS.md. The CLI alternative is described in [tools/scoring-experiment/README.md](tools/scoring-experiment/README.md).

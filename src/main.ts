@@ -1,9 +1,9 @@
 import './style.css';
 import { Capacitor } from '@capacitor/core';
 import { Rodgrod } from './bridge';
-import type { Recording, SessionSnapshot, Settings, Stats, Status } from './types';
+import type { CalibrationReport, Recording, SessionSnapshot, Settings, Stats, Status } from './types';
 import {
-  AZURE_REGIONS, SETTING_RULES, formatBytes, homeView, parseSettings, percent, trendArrow, validateCredentialsInput, weaknessLabel,
+  AZURE_REGIONS, SETTING_RULES, calibrationView, formatBytes, homeView, parseSettings, percent, trendArrow, validateCredentialsInput, weaknessLabel,
 } from './view-model';
 
 type Tab = 'practice' | 'progress' | 'recordings' | 'settings';
@@ -252,6 +252,7 @@ function recordingRow(r: Recording): HTMLElement {
 async function renderSettings(): Promise<HTMLElement> {
   const s: Settings = await Rodgrod.getSettings();
   const cache = await Rodgrod.getCacheInfo().catch(() => ({ clips: 0, bytes: 0 }));
+  const calib = await Rodgrod.getCalibration().catch(() => ({ report: null, words: 22 }));
   const inputs: Record<string, HTMLInputElement | HTMLSelectElement> = {};
   const fields = (Object.keys(SETTING_RULES) as (keyof typeof SETTING_RULES)[]).map((k) => {
     const rule = SETTING_RULES[k];
@@ -284,6 +285,7 @@ async function renderSettings(): Promise<HTMLElement> {
   };
 
   return h('section', {},
+    renderCalibrationCard(calib.report, calib.words),
     h('div', { class: 'card' },
       h('h2', {}, 'Session'),
       ...fields,
@@ -309,6 +311,40 @@ async function renderSettings(): Promise<HTMLElement> {
       h('p', { class: 'fine' }, 'Content is machine-generated and has not been checked by a native speaker. Scores are a guide, not a verdict.'),
     ),
   );
+}
+
+function renderCalibrationCard(report: CalibrationReport | null, words: number): HTMLElement {
+  const card = h('div', { class: 'card' },
+    h('h2', {}, 'Scoring check'),
+    h('p', {}, `Checks whether the scores can tell your careful Danish from an English-sounding version. ${words} words, about 6 minutes, hands-free. Do it parked, somewhere fairly quiet.`),
+    h('p', { class: 'fine' }, 'For each word: you hear it in Danish and repeat it as well as you can. Then you hear it read the English way and copy that. No feedback until the end.'),
+  );
+  if (report) {
+    const v = calibrationView(report, words);
+    card.append(
+      h('p', { class: v.good ? 'ok-text' : 'warn-text' }, v.verdict),
+      h('table', { class: 'sounds' },
+        h('thead', {}, h('tr', {}, h('th', {}, 'Score'), h('th', {}, 'Danish'), h('th', {}, 'English way'), h('th', {}, 'Danish wins'))),
+        h('tbody', {}, ...v.rows.map((r) => h('tr', {}, h('td', {}, r.label), h('td', {}, r.careful), h('td', {}, r.english), h('td', {}, r.beats)))),
+      ),
+      h('p', { class: 'fine' }, `${v.scored} of ${v.total} attempts scored · ${new Date(report.createdAt).toLocaleString()}. "Danish wins" = how often a careful attempt outscores an English-way one (50% = chance).`),
+    );
+    if (v.suggestion) {
+      card.append(
+        h('p', {}, v.suggestion),
+        h('button', { class: 'secondary', onclick: () => run('Applying…', async () => {
+          await Rodgrod.applyCalibration();
+          toast('Suggested score settings applied.');
+        }) }, 'Apply suggested settings'),
+      );
+    }
+  }
+  card.append(h('button', { class: 'primary', disabled: !!busy || !!status?.running, onclick: async () => {
+    await run('Starting…', () => Rodgrod.startCalibration());
+    switchTab('practice');
+    await refresh();
+  } }, report ? 'Run the scoring check again' : 'Start scoring check'));
+  return card;
 }
 
 // ---------------------------------------------------------------- shell
@@ -348,6 +384,7 @@ async function init() {
     if (tab === 'practice') render();
   });
   await Rodgrod.addListener('ended', () => { void refresh(); });
+  await Rodgrod.addListener('calibration', () => { if (tab === 'settings') render(); });
   await Rodgrod.addListener('offline', (p) => { offlineProgress = p; if (tab === 'practice') render(); });
   document.addEventListener('visibilitychange', () => { if (!document.hidden) void refresh(); });
   await refresh();

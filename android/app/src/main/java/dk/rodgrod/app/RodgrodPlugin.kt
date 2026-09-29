@@ -129,6 +129,33 @@ class RodgrodPlugin : Plugin() {
         call.resolve()
     }
 
+    /** Starts the in-app scoring check (Milestone 0), hands-free, in the foreground service. */
+    @PluginMethod
+    fun startCalibration(call: PluginCall) {
+        if (getPermissionState("microphone") != PermissionState.GRANTED) {
+            call.reject("Microphone permission is needed.", "PERMISSION")
+            return
+        }
+        if (graph.credentials() == null) {
+            call.reject("Add your Azure Speech key first.", "SETUP")
+            return
+        }
+        SessionService.startCalibration(context)
+        call.resolve()
+    }
+
+    @PluginMethod
+    fun getCalibration(call: PluginCall) = async(call) {
+        JSONObject().put("report", graph.engine.lastCalibration()?.toJson() ?: JSONObject.NULL)
+            .put("words", graph.calibrationWords.size)
+    }
+
+    @PluginMethod
+    fun applyCalibration(call: PluginCall) = async(call) {
+        val s = graph.engine.applyCalibrationSuggestion() ?: throw IllegalArgumentException("There is no suggestion to apply yet.")
+        s.toJson()
+    }
+
     @PluginMethod
     fun stopSession(call: PluginCall) { SessionService.send(context, SessionService.ACTION_STOP); call.resolve() }
 

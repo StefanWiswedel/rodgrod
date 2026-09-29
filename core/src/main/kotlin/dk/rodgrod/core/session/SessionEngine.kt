@@ -6,6 +6,7 @@ import dk.rodgrod.core.azure.AzureTts
 import dk.rodgrod.core.azure.HttpClient
 import dk.rodgrod.core.azure.ServiceUnavailableException
 import dk.rodgrod.core.azure.UrlConnectionHttpClient
+import dk.rodgrod.core.calibration.CalibrationReport
 import dk.rodgrod.core.content.Content
 import dk.rodgrod.core.learning.Composer
 import dk.rodgrod.core.learning.Leitner
@@ -42,6 +43,30 @@ class SessionEngine(
         if (s.scorer == Settings.SCORER_FALLBACK) return AsrFallbackScorer(stt, s.bands)
         val metric = if (s.paMetric == Settings.PA_ACCURACY) PronunciationAssessmentScorer.Metric.ACCURACY else PronunciationAssessmentScorer.Metric.PRON
         return PronunciationAssessmentScorer(stt, s.bands, metric = metric)
+    }
+
+    /** The scoring check always uses Pronunciation Assessment with PronScore (AccuracyScore is read from the same response). */
+    fun calibrationScorer(creds: AzureCredentials): Scorer = PronunciationAssessmentScorer(AzureStt(creds, http), settings().bands)
+
+    fun saveCalibration(r: CalibrationReport) = store.setMeta(CALIBRATION_KEY, r.toJson().toString())
+
+    fun lastCalibration(): CalibrationReport? =
+        store.getMeta(CALIBRATION_KEY)?.let { runCatching { CalibrationReport.fromJson(JSONObject(it)) }.getOrNull() }
+
+    /** Applies the last scoring check's suggested bands and metric. Returns the new settings, or null if there is no suggestion. */
+    fun applyCalibrationSuggestion(): Settings? {
+        val sug = lastCalibration()?.suggestion ?: return null
+        val s = settings().copy(scorer = Settings.SCORER_PA, paMetric = sug.metric.key, bandGood = sug.goodMin, bandClose = sug.closeMin)
+        if (s.validate().isNotEmpty()) return null
+        store.saveSettings(s)
+        return s
+    }
+
+    /** Ensures the given clips are cached; returns how many are available. */
+    fun ensureClips(specs: List<ClipSpec>, clips: ClipStore, onProgress: (Int, Int) -> Unit = { _, _ -> }): Int {
+        var available = 0
+        specs.forEachIndexed { i, spec -> if (clips.ensure(spec) != null) available++; onProgress(i + 1, specs.size) }
+        return available
     }
 
     fun hvptAnswers(creds: AzureCredentials) = HvptAnswerSource { wav -> HvptAnswerRecognizer(AzureStt(creds, http)).recognize(wav) }
@@ -168,4 +193,8 @@ class SessionEngine(
             .put("band", a.band?.name ?: JSONObject.NULL).put("reliable", a.reliable).put("recognized", a.recognized ?: JSONObject.NULL)
             .put("attemptNo", a.attemptNo).put("durationMs", a.durationMs)
     })
+
+    companion object {
+        const val CALIBRATION_KEY = "calibration_report"
+    }
 }

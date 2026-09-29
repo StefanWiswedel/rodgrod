@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  formatBytes, formatClock, homeView, parseSettings, phaseLabel, trendArrow, validateCredentialsInput, weaknessLabel,
+  calibrationView, formatBytes, formatClock, homeView, parseSettings, phaseLabel, trendArrow, validateCredentialsInput, weaknessLabel,
 } from '../src/view-model';
 import type { Settings, Status } from '../src/types';
 
@@ -99,5 +99,28 @@ describe('credentials input', () => {
     expect(validateCredentialsInput('short', 'westeurope')).toMatch(/doesn't look/);
     expect(validateCredentialsInput('0123456789abcdef0123456789abcdef', 'West Europe')).toMatch(/region/);
     expect(validateCredentialsInput('0123456789abcdef0123456789abcdef', 'westeurope')).toBeNull();
+  });
+});
+
+describe('calibrationView', () => {
+  it('summarises a report', () => {
+    const v = calibrationView({
+      createdAt: 0, verdict: 'WELL', verdictText: 'Scores separate well.', summary: '',
+      samples: [
+        { slug: 'mad', danish: 'mad', condition: 'careful', pron: 88, accuracy: 90, error: null },
+        { slug: 'mad', danish: 'mad', condition: 'anglicised', pron: null, accuracy: null, error: 'offline' },
+      ],
+      metrics: [
+        { metric: 'pron', pairs: 6, meanCareful: 86.4, meanAnglicised: 51.2, meanDiff: 35, winRate: 1, auc: 0.97, bestThreshold: 78, verdict: 'WELL', verdictText: '' },
+        { metric: 'accuracy', pairs: 6, meanCareful: null, meanAnglicised: null, meanDiff: null, winRate: null, auc: null, bestThreshold: null, verdict: 'TOO_FEW', verdictText: '' },
+      ],
+      suggestion: { paMetric: 'pron', bandGood: 87, bandClose: 78 },
+    }, 22);
+    expect(v.good).toBe(true);
+    expect(v.rows[0]).toEqual({ label: 'Overall score', careful: '86', english: '51', beats: '97%' });
+    expect(v.rows[1].beats).toBe('–');
+    expect(v.suggestion).toContain('good from 87, close from 78');
+    expect(v.scored).toBe(1);
+    expect(v.total).toBe(44);
   });
 });

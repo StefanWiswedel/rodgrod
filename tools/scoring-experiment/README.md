@@ -1,5 +1,7 @@
 # Milestone 0 — scoring experiment
 
+> **Easiest way: use the app.** Settings → **Scoring check** does all of this hands-free (about 6 minutes): it plays each word, records you saying it carefully and the English way, scores both and shows the verdict, with a button to apply suggested score settings. This command-line tool is for re-scoring your own WAV files on a computer.
+
 Question: **do the scores separate a careful Danish attempt from an anglicised one?**
 If they don't, per-item feedback in the app is noise, and we should know before relying on it.
 
@@ -16,16 +18,16 @@ Three scores are compared:
 
 ## 1. Record (about 10 minutes)
 
-Word list: [`words.tsv`](words.tsv) (22 words). For **each** word record two files:
+Word list: [`content/calibration.json`](../../content/calibration.json) (22 words, shared with the app). For **each** word record two files:
 
 | file name | how to say it |
 |---|---|
 | `<slug>_careful.wav` | Your best Danish attempt. Listen to a native model first (e.g. Google Translate or ordnet.dk). |
-| `<slug>_anglicised.wav` | Deliberately English-sounding. The last column of `words.tsv` says how. |
+| `<slug>_anglicised.wav` | Deliberately English-sounding. The `how_to_anglicise` field in the word list says how. |
 
 Examples: `mad_careful.wav`, `mad_anglicised.wav`, `rodgrod_careful.wav`.
 
-The slug is the first column of `words.tsv` (plain ASCII, so file names stay safe: `rod` = rød, `laese` = læse). Files with slugs that aren't in the list are still scored, with underscores read as spaces.
+The slug is the `slug` field in the word list (plain ASCII, so file names stay safe: `rod` = rød, `laese` = læse). Files with slugs that aren't in the list are still scored, with underscores read as spaces.
 
 Recording tips:
 - Any WAV works (any sample rate, mono or stereo, 16/24/32-bit). The tool converts to 16 kHz mono.

@@ -39,6 +39,9 @@ export class RodgrodWeb extends WebPlugin implements Omit<RodgrodPlugin, 'addLis
     this.tick = 0;
     this.timer = setInterval(() => this.step(), 700);
   }
+  async startCalibration() { await this.startSession(); }
+  async getCalibration() { return { report: null, words: 22 }; }
+  async applyCalibration() { return { ...this.settings, bandGood: 87, bandClose: 78 }; }
   async stopSession() { this.finish('STOPPED', 'Stopped'); }
   async pauseSession() { if (this.snap) this.emit({ ...this.snap, state: 'PAUSED', phase: 'paused' }); }
   async resumeSession() { if (this.snap) this.emit({ ...this.snap, state: 'RUNNING' }); }

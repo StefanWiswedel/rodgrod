@@ -4,36 +4,8 @@ import dk.rodgrod.core.scoring.Band
 import dk.rodgrod.core.scoring.Bands
 import dk.rodgrod.core.scoring.ScoreOutcome
 import java.util.Locale
-import kotlin.math.sqrt
-
-object Stats {
-    fun mean(xs: List<Double>) = if (xs.isEmpty()) Double.NaN else xs.average()
-
-    fun sd(xs: List<Double>): Double {
-        if (xs.size < 2) return Double.NaN
-        val m = xs.average()
-        return sqrt(xs.sumOf { (it - m) * (it - m) } / (xs.size - 1))
-    }
-
-    /** Probability a random careful score beats a random anglicised score (ties count half). */
-    fun auc(pos: List<Double>, neg: List<Double>): Double {
-        if (pos.isEmpty() || neg.isEmpty()) return Double.NaN
-        var s = 0.0
-        for (p in pos) for (n in neg) s += when { p > n -> 1.0; p == n -> 0.5; else -> 0.0 }
-        return s / (pos.size * neg.size)
-    }
-
-    /** Threshold maximising (TPR - FPR): score >= t counts as "careful". */
-    fun bestThreshold(pos: List<Double>, neg: List<Double>): Pair<Double, Double> {
-        var best = Double.NaN to -1.0
-        for (t in (pos + neg).distinct().sorted()) {
-            val tpr = pos.count { it >= t }.toDouble() / pos.size
-            val fpr = neg.count { it >= t }.toDouble() / neg.size
-            if (tpr - fpr > best.second) best = t to (tpr - fpr)
-        }
-        return best
-    }
-}
+import dk.rodgrod.core.calibration.Stats
+import dk.rodgrod.core.calibration.Verdict
 
 object Report {
     private fun f(x: Double, d: Int = 1) = if (x.isNaN()) "n/a" else "%.${d}f".format(Locale.ROOT, x)
@@ -50,11 +22,15 @@ object Report {
         }.sortedBy { it.first }
     }
 
-    fun verdict(auc: Double, winRate: Double, n: Int): String = when {
-        n < 5 -> "TOO FEW PAIRS to judge (need at least 5 words recorded both ways)."
-        auc >= 0.8 && winRate >= 0.8 -> "SEPARATES WELL: careful attempts reliably score higher than anglicised ones."
-        auc >= 0.65 && winRate >= 0.6 -> "SEPARATES WEAKLY: there is a signal, but single scores are noisy; rely on trends, not single items."
-        else -> "DOES NOT SEPARATE: scores barely distinguish careful from anglicised attempts; do not trust per-item feedback."
+    fun verdict(auc: Double, winRate: Double, n: Int): String {
+        val v = Stats.verdict(auc, winRate, n)
+        val label = when (v) {
+            Verdict.TOO_FEW -> "TOO FEW PAIRS"
+            Verdict.WELL -> "SEPARATES WELL"
+            Verdict.WEAK -> "SEPARATES WEAKLY"
+            Verdict.NONE -> "DOES NOT SEPARATE"
+        }
+        return "$label: ${v.text}"
     }
 
     fun build(rows: List<Row>, scorerNames: List<String>, bands: Bands): String {
