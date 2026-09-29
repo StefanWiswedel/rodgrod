@@ -28,7 +28,11 @@ import dk.rodgrod.app.R
 import dk.rodgrod.app.audio.AndroidAudioInput
 import dk.rodgrod.app.audio.AndroidAudioOutput
 import dk.rodgrod.app.audio.FocusManager
+import dk.rodgrod.core.azure.AzureCredentials
+import dk.rodgrod.core.calibration.CalibrationRunner
 import dk.rodgrod.core.session.ClipPlanner
+import dk.rodgrod.core.session.FileClipCache
+import dk.rodgrod.core.session.Voices
 import dk.rodgrod.core.session.RunState
 import dk.rodgrod.core.session.ScoringQueue
 import dk.rodgrod.core.session.SessionControl
@@ -62,7 +66,8 @@ class SessionService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
-            ACTION_START -> start(intent.getBooleanExtra(EXTRA_RESUME, false))
+            ACTION_START -> start(intent.getBooleanExtra(EXTRA_RESUME, false), calibration = false)
+            ACTION_CALIBRATE -> start(resume = false, calibration = true)
             ACTION_STOP -> {
                 control?.requestStop()
                 if (worker == null) stopSelfSafely()
@@ -75,7 +80,7 @@ class SessionService : Service() {
         return START_NOT_STICKY
     }
 
-    private fun start(resume: Boolean) {
+    private fun start(resume: Boolean, calibration: Boolean) {
         if (worker?.isAlive == true) return
         createChannel()
         val micType = if (hasMic()) ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE else 0
@@ -93,10 +98,10 @@ class SessionService : Service() {
         val ctl = SessionControl()
         control = ctl
         SessionBus.running = true
-        worker = Thread({ runSession(ctl, resume) }, "rodgrod-session").also { it.start() }
+        worker = Thread({ runSession(ctl, resume, calibration) }, "rodgrod-session").also { it.start() }
     }
 
-    private fun runSession(ctl: SessionControl, resume: Boolean) {
+    private fun runSession(ctl: SessionControl, resume: Boolean, calibration: Boolean) {
         val graph = AppGraph.get(this)
         val out = AndroidAudioOutput(this, ctl)
         val fm = FocusManager(this, ctl) { change -> Log.i(TAG, "audio focus: $change"); updateNotification(force = true) }
@@ -110,6 +115,10 @@ class SessionService : Service() {
                 ?: throw SetupException("Couldn't load the Danish voices. Connect to the internet once, then try again.")
             val planner = ClipPlanner(graph.content, voices, settings)
             val clips = graph.clipCache(creds)
+            if (calibration) {
+                runCalibration(graph, creds, voices, clips, out, fm, ctl)
+                return
+            }
             val scorer = engine.scorer(creds, settings)
 
             // Score anything recorded offline last time (only if we seem to be online).
@@ -165,6 +174,25 @@ class SessionService : Service() {
             SessionBus.publish("ended", JSONObject())
             Handler(Looper.getMainLooper()).post { stopSelfSafely() }
         }
+    }
+
+    /** In-app scoring check (Milestone 0): each word said carefully, then the English way; results saved for the UI. */
+    private fun runCalibration(graph: AppGraph, creds: AzureCredentials, voices: Voices, clips: FileClipCache,
+                               out: AndroidAudioOutput, fm: FocusManager, ctl: SessionControl) {
+        if (!graph.isOnline()) throw SetupException("The scoring check needs an internet connection.")
+        val engine = graph.engine
+        val runner = CalibrationRunner(graph.calibrationWords, voices, clips, out, AndroidAudioInput(this, ctl),
+            engine.calibrationScorer(creds), graph.recordings, dk.rodgrod.core.session.SystemClock, ctl,
+            vad = engine.settings().vadConfig(),
+            save = { r -> engine.saveCalibration(r); SessionBus.publish("calibration", r.toJson()) },
+            listener = { snap -> onSnapshot(snap) })
+        val specs = runner.clipsNeeded()
+        engine.ensureClips(specs, clips) { done, total ->
+            if (ctl.stopRequested) throw StopRequested()
+            publishPhase("preparing", "Preparing audio $done/$total", JSONObject().put("done", done).put("total", total))
+        }
+        if (!fm.request()) Log.w(TAG, "audio focus not granted; continuing")
+        runner.run()
     }
 
     private fun onSnapshot(s: Snapshot) {
@@ -265,6 +293,8 @@ class SessionService : Service() {
         "scoring" -> "Scoring"
         "tip" -> "Tip"
         "hvpt_intro", "hvpt_trial" -> "Listening drill"
+        "calib_careful" -> "Check: Danish"
+        "calib_anglicised" -> "Check: English way"
         "paused" -> "Paused"
         else -> null
     }
@@ -293,11 +323,16 @@ class SessionService : Service() {
         const val ACTION_STOP = "dk.rodgrod.app.STOP"
         const val ACTION_PAUSE = "dk.rodgrod.app.PAUSE"
         const val ACTION_RESUME = "dk.rodgrod.app.RESUME"
+        const val ACTION_CALIBRATE = "dk.rodgrod.app.CALIBRATE"
         const val EXTRA_RESUME = "resume"
 
         fun start(context: Context, resume: Boolean) {
             ContextCompat.startForegroundService(context,
                 Intent(context, SessionService::class.java).setAction(ACTION_START).putExtra(EXTRA_RESUME, resume))
+        }
+
+        fun startCalibration(context: Context) {
+            ContextCompat.startForegroundService(context, Intent(context, SessionService::class.java).setAction(ACTION_CALIBRATE))
         }
 
         fun send(context: Context, action: String) {

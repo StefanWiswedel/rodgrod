@@ -1,6 +1,6 @@
 import { registerPlugin, type PluginListenerHandle } from '@capacitor/core';
 import type { PermissionState } from '@capacitor/core';
-import type { Recording, SessionSnapshot, Settings, Stats, Status } from './types';
+import type { CalibrationReport, Recording, SessionSnapshot, Settings, Stats, Status } from './types';
 
 export interface RodgrodPlugin {
   getStatus(): Promise<Status>;
@@ -9,6 +9,9 @@ export interface RodgrodPlugin {
   getSettings(): Promise<Settings>;
   saveSettings(s: Settings): Promise<Settings>;
   startSession(o: { resume: boolean }): Promise<void>;
+  startCalibration(): Promise<void>;
+  getCalibration(): Promise<{ report: CalibrationReport | null; words: number }>;
+  applyCalibration(): Promise<Settings>;
   stopSession(): Promise<void>;
   pauseSession(): Promise<void>;
   resumeSession(): Promise<void>;
@@ -22,6 +25,7 @@ export interface RodgrodPlugin {
   requestPermissions(o?: { permissions: ('microphone' | 'notifications')[] }): Promise<{ microphone: PermissionState; notifications: PermissionState }>;
   addListener(event: 'session', fn: (s: SessionSnapshot) => void): Promise<PluginListenerHandle>;
   addListener(event: 'prepared' | 'ended', fn: (d: Record<string, unknown>) => void): Promise<PluginListenerHandle>;
+  addListener(event: 'calibration', fn: (r: CalibrationReport) => void): Promise<PluginListenerHandle>;
   addListener(event: 'offline', fn: (d: { done: number; total: number }) => void): Promise<PluginListenerHandle>;
 }
 

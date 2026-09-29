@@ -1,5 +1,5 @@
 // Pure presentation logic (no DOM), unit-tested in test/view-model.test.ts.
-import type { SessionSnapshot, Settings, Status } from './types';
+import type { CalibrationReport, SessionSnapshot, Settings, Status } from './types';
 
 export function formatClock(ms: number): string {
   const total = Math.max(0, Math.round(ms / 1000));
@@ -31,6 +31,8 @@ const PHASES: Record<string, string> = {
   tip: 'Tip',
   hvpt_intro: 'Listening drill',
   hvpt_trial: 'One or two?',
+  calib_careful: 'Say it in Danish',
+  calib_anglicised: 'Now the English way',
   paused: 'Paused',
   resuming: 'Resuming',
   skipped: 'Skipped (audio missing)',
@@ -206,4 +208,35 @@ export function validateCredentialsInput(key: string, region: string): string | 
   if (k.length < 16 || /\s/.test(k)) return "That doesn't look like an Azure Speech key.";
   if (!/^[a-z0-9-]{2,40}$/.test(r)) return 'Enter a region such as westeurope.';
   return null;
+}
+
+export interface CalibrationView {
+  verdict: string;
+  good: boolean;
+  rows: { label: string; careful: string; english: string; beats: string }[];
+  suggestion: string | null;
+  scored: number;
+  total: number;
+}
+
+const METRIC_LABEL = { pron: 'Overall score', accuracy: 'Accuracy only' } as const;
+
+/** Summarises a scoring-check report for the Settings card. */
+export function calibrationView(r: CalibrationReport, words: number): CalibrationView {
+  const fmt = (x: number | null) => (x === null ? '–' : String(Math.round(x)));
+  return {
+    verdict: r.verdictText,
+    good: r.verdict === 'WELL',
+    rows: r.metrics.map((m) => ({
+      label: METRIC_LABEL[m.metric],
+      careful: fmt(m.meanCareful),
+      english: fmt(m.meanAnglicised),
+      beats: m.auc === null ? '–' : percent(m.auc),
+    })),
+    suggestion: r.suggestion
+      ? `Suggested: "${METRIC_LABEL[r.suggestion.paMetric]}", good from ${r.suggestion.bandGood}, close from ${r.suggestion.bandClose}.`
+      : null,
+    scored: r.samples.filter((s) => s.pron !== null).length,
+    total: words * 2,
+  };
 }

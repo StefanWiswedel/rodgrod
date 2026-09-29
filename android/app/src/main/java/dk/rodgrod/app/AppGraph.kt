@@ -7,6 +7,8 @@ import dk.rodgrod.app.data.AndroidDb
 import dk.rodgrod.app.data.FileRecordingSink
 import dk.rodgrod.app.data.SecureCredentials
 import dk.rodgrod.core.azure.AzureCredentials
+import dk.rodgrod.core.calibration.CalibrationWord
+import dk.rodgrod.core.calibration.CalibrationWords
 import dk.rodgrod.core.content.Content
 import dk.rodgrod.core.content.ContentLoader
 import dk.rodgrod.core.session.FileClipCache
@@ -22,6 +24,9 @@ class AppGraph private constructor(val context: Context) {
     val recordings = FileRecordingSink(File(context.filesDir, "recordings"))
     val engine = SessionEngine(content, store, SystemClock, recordings)
     val clipDir = File(context.filesDir, "tts-cache")
+    val calibrationWords: List<CalibrationWord> by lazy {
+        CalibrationWords.parse(context.assets.open("content/calibration.json").bufferedReader().use { it.readText() })
+    }
 
     fun credentials(): AzureCredentials? = SecureCredentials.load(context)
 

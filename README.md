@@ -31,7 +31,7 @@ You never press a button to end an attempt: the app notices when you start and s
 5. Optional, on Wi-Fi: **Download all audio for offline** caches every clip for the whole deck.
 6. Tap **Start session**. Stop from the notification, or let it finish.
 
-Settings (session length, silence threshold, score bands, number of recordings kept, and more) are on the Settings tab.
+Settings (session length, silence threshold, score bands, number of recordings kept, and more) are on the Settings tab. It also has the **Scoring check**: a 6-minute, hands-free test of whether the scores separate your careful Danish from an English-sounding version, which can then set the score bands for you.
 
 ## Privacy and secrets
 
@@ -80,7 +80,7 @@ Repo layout:
 | `core/` | Kotlin session engine and its tests |
 | `android/` | Capacitor Android project and the native Kotlin layer (`android/app/src/main/java/dk/rodgrod/app/`) |
 | `content/` | JSON decks and tips (packaged into the APK as assets) |
-| `tools/scoring-experiment/` | Milestone 0: does the scorer separate careful from anglicised speech? |
+| `tools/scoring-experiment/` | Milestone 0 as a command-line tool (the app has the same check under Settings → Scoring check) |
 | `.github/workflows/` | CI (tests + debug APK) and tagged signed releases |
 
 ## Building and testing locally

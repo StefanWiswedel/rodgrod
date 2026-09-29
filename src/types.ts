@@ -102,3 +102,26 @@ export interface Recording {
   attemptNo: number;
   durationMs: number;
 }
+
+export interface CalibrationMetric {
+  metric: 'pron' | 'accuracy';
+  pairs: number;
+  meanCareful: number | null;
+  meanAnglicised: number | null;
+  meanDiff: number | null;
+  winRate: number | null;
+  auc: number | null;
+  bestThreshold: number | null;
+  verdict: 'TOO_FEW' | 'WELL' | 'WEAK' | 'NONE';
+  verdictText: string;
+}
+
+export interface CalibrationReport {
+  createdAt: number;
+  samples: { slug: string; danish: string; condition: 'careful' | 'anglicised'; pron: number | null; accuracy: number | null; error: string | null }[];
+  metrics: CalibrationMetric[];
+  verdict: CalibrationMetric['verdict'];
+  verdictText: string;
+  summary: string;
+  suggestion: { paMetric: 'pron' | 'accuracy'; bandGood: number; bandClose: number } | null;
+}

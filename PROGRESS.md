@@ -2,17 +2,12 @@
 
 _Last updated: overnight build, 2026-09-28._
 
-## ☀️ What you need to do in the morning
+## ☀️ What you need to do next
 
-1. **Make `main`.** The repo was empty, so all work is on branch `ccr-1f54be95-dzmzj7`, which GitHub made the default branch. A pull request wasn't possible because there was no base branch. Either:
-   - rename the branch to `main` (GitHub → Settings → Branches → rename), or
-   - `git push origin ccr-1f54be95-dzmzj7:main` and set `main` as the default.
-2. **Milestone 0 (about 15 min):**
-   1. Record the 22 words in [`tools/scoring-experiment/words.tsv`](tools/scoring-experiment/words.tsv) twice each: `<slug>_careful.wav` and `<slug>_anglicised.wav`.
-   2. Run `tools/scoring-experiment/run.sh ~/your-folder` with `AZURE_SPEECH_KEY` / `AZURE_SPEECH_REGION` set (needs Java 17+).
-   3. Optional first: `run.sh --synthesize-demo /tmp/demo && run.sh /tmp/demo` checks the pipeline with TTS audio before you record.
-   4. Read `tools/scoring-experiment/out/report.md`. If the verdict isn't "SEPARATES WELL", tell me, and adjust the bands in Settings.
-3. **Install the debug APK:** Actions → latest green "CI" run → artifact `rodgrod-debug-apk` → unzip → install. Then enter your Azure key and region on first launch.
+1. ~~**Make `main`.**~~ Done: the repo now has a single `main` branch.
+2. **Scoring check (Milestone 0), about 6 minutes, in the app:** install the latest debug APK, then Settings → **Scoring check** → Start. Do it parked. At the end, tap **Apply suggested settings** if one is offered. If the verdict is "do not separate", tell me.
+   (The command-line tool in `tools/scoring-experiment/` still works if you'd rather record WAV files yourself.)
+3. **Install the debug APK:** Actions → latest green "CI" run on `main` → artifact `rodgrod-debug-apk` → unzip → install. Then enter your Azure key and region on first launch.
 4. **Run the manual test plan** in [TESTING.md](TESTING.md): phone speaker first, then the car. Note ✅/❌ per step.
 5. **Release signing (when you want a release APK):** follow README → *Releases* to create the keystore and add the four `RODGROD_*` secrets, then push a tag `v0.1.0`.
 6. **Skim the seed deck.** It is machine-generated and unverified. Wrong target-sound tags matter most, because they drive the weakness weighting.
@@ -20,7 +15,8 @@ _Last updated: overnight build, 2026-09-28._
 ## ✅ Done
 
 - **Azure check (D1):** da-DK **is** supported by Pronunciation Assessment. It's the primary scorer, and the fallback (STT + edit distance + en-US "anglicised" signal) sits behind the same interface.
-- **Milestone 0:** `tools/scoring-experiment/`: CLI, word list with instructions for anglicised versions, CSV plus a markdown report (means, paired differences, AUC, best threshold, per-sound breakdown, verdict), a TTS demo mode, and tests.
+- **Milestone 0 in the app:** Settings → Scoring check runs it hands-free, scores both versions of each word, shows the verdict and can apply the suggested bands and metric. Shares its word list and statistics with the CLI tool.
+- **Milestone 0 CLI:** `tools/scoring-experiment/`: CLI, word list with instructions for anglicised versions, CSV plus a markdown report (means, paired differences, AUC, best threshold, per-sound breakdown, verdict), a TTS demo mode, and tests.
 - **Engine (`core/`, pure Kotlin):**
   - VAD attempt detector: armed → waiting → recording ⇄ silence candidate → finalise, with max duration and a quality check
   - Leitner scheduler, weakness tracking with a per-sound cap, session composer (70/30, adaptive), HVPT block selection, level gate
@@ -51,7 +47,6 @@ _Last updated: overnight build, 2026-09-28._
 - **Azure key:** needed for Milestone 0 and for the app. Never stored in the repo.
 - **Release signing secrets:** the release workflow is ready but fails early, with a clear message, until the four secrets exist.
 - **Device and car testing:** see TESTING.md.
-- **`main` branch / PR:** see step 1 above.
 
 ## Notes from the build
 
