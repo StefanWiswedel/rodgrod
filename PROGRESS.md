@@ -9,7 +9,7 @@ _Last updated: overnight build, 2026-09-28._
    (The command-line tool in `tools/scoring-experiment/` still works if you'd rather record WAV files yourself.)
 3. **Set up release signing (once, ~5 min):** follow README → *Releases* (create a keystore, add four secrets). From then on every change on `main` appears under **Releases** as an APK that updates in place and keeps your progress.
 4. **Run the manual test plan** in [TESTING.md](TESTING.md): phone speaker first, then the car. Note ✅/❌ per step.
-6. **Skim the seed deck.** It is machine-generated and unverified. Wrong target-sound tags matter most, because they drive the weakness weighting.
+5. **Skim the seed deck.** It is machine-generated and unverified. Wrong target-sound tags matter most, because they drive the weakness weighting.
 
 ## ✅ Done
 
