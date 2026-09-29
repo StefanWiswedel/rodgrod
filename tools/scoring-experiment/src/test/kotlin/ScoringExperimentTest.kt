@@ -1,6 +1,7 @@
 package dk.rodgrod.tools
 
 import dk.rodgrod.core.audio.Synth
+import dk.rodgrod.core.calibration.Stats
 import dk.rodgrod.core.audio.Pcm
 import dk.rodgrod.core.audio.Wav
 import dk.rodgrod.core.scoring.Band
@@ -22,7 +23,7 @@ class ScoringExperimentTest {
     }
 
     @Test fun wordListLoads() {
-        val words = loadWordList(File("words.tsv"))
+        val words = loadWordList(File("../../content/calibration.json"))
         assertTrue(words.size >= 15)
         assertEquals("rødgrød", words.getValue("rodgrod").danish)
     }
@@ -42,7 +43,7 @@ class ScoringExperimentTest {
     @Test fun endToEndWithFakeScorer() {
         val dir = Files.createTempDirectory("rec").toFile()
         val tone = Wav.encode(Pcm(Synth.tone(200.0, 400, 44100), 44100))
-        val words = loadWordList(File("words.tsv"))
+        val words = loadWordList(File("../../content/calibration.json"))
         val slugs = words.keys.take(6)
         for (s in slugs) {
             File(dir, "${s}_careful.wav").writeBytes(tone)

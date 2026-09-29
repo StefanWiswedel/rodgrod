@@ -1,6 +1,7 @@
 package dk.rodgrod.tools
 
 import dk.rodgrod.core.audio.Resampler
+import dk.rodgrod.core.calibration.CalibrationWords
 import dk.rodgrod.core.audio.Wav
 import dk.rodgrod.core.azure.AzureCredentials
 import dk.rodgrod.core.azure.AzureStt
@@ -33,11 +34,9 @@ data class Row(
     val durationS: Double, val results: Map<String, ScoreOutcome>,
 )
 
+/** The shared word list (content/calibration.json), also used by the app's in-app scoring check. */
 fun loadWordList(f: File): Map<String, WordInfo> =
-    f.readLines(Charsets.UTF_8).filter { it.isNotBlank() && !it.startsWith("#") }.associate { line ->
-        val c = line.split('\t')
-        c[0] to WordInfo(c[0], c[1], c[2], c.getOrElse(3) { "" }.split(',').filter { it.isNotBlank() }, c.getOrElse(4) { "" })
-    }
+    CalibrationWords.parse(f.readText(Charsets.UTF_8)).associate { w -> w.slug to WordInfo(w.slug, w.danish, w.english, w.sounds, w.howToAnglicise) }
 
 private val FILE_RE = Regex("^(.+)_(careful|anglici[sz]ed)\\.wav$", RegexOption.IGNORE_CASE)
 
@@ -53,7 +52,7 @@ fun main(argv: Array<String>) {
         println(USAGE); return
     }
     val toolDir = findToolDir()
-    val words = loadWordList(File(toolDir, "words.tsv"))
+    val words = loadWordList(File(toolDir, "../../content/calibration.json"))
     val creds = loadCredentials(toolDir)
 
     val demoIdx = args.indexOf("--synthesize-demo")
@@ -193,7 +192,7 @@ private fun valueOf(args: List<String>, flag: String): String? = args.indexOf(fl
 
 private fun findToolDir(): File {
     val candidates = listOf(File("tools/scoring-experiment"), File("."), File("../tools/scoring-experiment"))
-    return candidates.firstOrNull { File(it, "words.tsv").isFile } ?: fail("Run from the repo root (cannot find tools/scoring-experiment/words.tsv)")
+    return candidates.firstOrNull { File(it, "../../content/calibration.json").isFile } ?: fail("Run from the repo root (cannot find content/calibration.json)")
 }
 
 private fun loadCredentials(toolDir: File): AzureCredentials {
@@ -219,5 +218,5 @@ private fun fail(msg: String): Nothing { System.err.println("error: $msg"); exit
 private const val USAGE = """Milestone 0 scoring experiment
   run.sh <recordings-folder> [--out <dir>] [--bands GOOD,CLOSE] [--no-fallback]
   run.sh --synthesize-demo <folder>
-Files must be named <word>_careful.wav and <word>_anglicised.wav (see words.tsv for the list).
+Files must be named <word>_careful.wav and <word>_anglicised.wav (word list: content/calibration.json).
 Credentials: AZURE_SPEECH_KEY and AZURE_SPEECH_REGION env vars, credentials.properties, or a prompt."""

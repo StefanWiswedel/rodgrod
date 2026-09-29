@@ -1,0 +1,214 @@
+{
+ "version": 1,
+ "note": "Word list for the scoring check (Milestone 0): each word is said carefully and then deliberately anglicised. Used by the app (Settings → Scoring check) and by tools/scoring-experiment.",
+ "words": [
+  {
+   "slug": "mad",
+   "danish": "mad",
+   "english": "food",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "how_to_anglicise": "Say it like English \"mad\", with a hard D at the end."
+  },
+  {
+   "slug": "rod",
+   "danish": "rød",
+   "english": "red",
+   "target_sounds": [
+    "soft_d",
+    "front_rounded",
+    "danish_r"
+   ],
+   "how_to_anglicise": "Say \"rod\" as in English \"fishing rod\": English R, hard D."
+  },
+  {
+   "slug": "tid",
+   "danish": "tid",
+   "english": "time",
+   "target_sounds": [
+    "soft_d",
+    "stod"
+   ],
+   "how_to_anglicise": "Say English \"tid\" with a clear hard D."
+  },
+  {
+   "slug": "hvad",
+   "danish": "hvad",
+   "english": "what",
+   "target_sounds": [
+    "soft_d"
+   ],
+   "how_to_anglicise": "Read it as spelled in English: \"h-vad\" with a hard D."
+  },
+  {
+   "slug": "flode",
+   "danish": "fløde",
+   "english": "cream",
+   "target_sounds": [
+    "soft_d",
+    "front_rounded"
+   ],
+   "how_to_anglicise": "Say \"floh-dee\" with an English O and a hard D."
+  },
+  {
+   "slug": "rodgrod",
+   "danish": "rødgrød",
+   "english": "red berry pudding",
+   "target_sounds": [
+    "soft_d",
+    "front_rounded",
+    "danish_r"
+   ],
+   "how_to_anglicise": "Say \"rod-grod\" like two English words."
+  },
+  {
+   "slug": "hund",
+   "danish": "hund",
+   "english": "dog",
+   "target_sounds": [
+    "stod"
+   ],
+   "how_to_anglicise": "Say English \"hund\" (like \"hunt\" with a D), no creak in the voice."
+  },
+  {
+   "slug": "mand",
+   "danish": "mand",
+   "english": "man",
+   "target_sounds": [
+    "stod"
+   ],
+   "how_to_anglicise": "Say English \"mand\", sounding the D, no creak."
+  },
+  {
+   "slug": "hus",
+   "danish": "hus",
+   "english": "house",
+   "target_sounds": [
+    "stod",
+    "vowel_length"
+   ],
+   "how_to_anglicise": "Say it like English \"hus\" with a short U."
+  },
+  {
+   "slug": "vin",
+   "danish": "vin",
+   "english": "wine",
+   "target_sounds": [
+    "vowel_length",
+    "stod"
+   ],
+   "how_to_anglicise": "Say it like English \"vin\" (short I, as in \"win\")."
+  },
+  {
+   "slug": "laese",
+   "danish": "læse",
+   "english": "to read",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "how_to_anglicise": "Say \"lay-see\" as an English speaker would read it."
+  },
+  {
+   "slug": "mase",
+   "danish": "mase",
+   "english": "to squash",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "how_to_anglicise": "Say it like English \"mass-uh\" with a short A."
+  },
+  {
+   "slug": "ol",
+   "danish": "øl",
+   "english": "beer",
+   "target_sounds": [
+    "front_rounded"
+   ],
+   "how_to_anglicise": "Say \"ool\" or \"earl\" (English vowels)."
+  },
+  {
+   "slug": "syv",
+   "danish": "syv",
+   "english": "seven",
+   "target_sounds": [
+    "front_rounded"
+   ],
+   "how_to_anglicise": "Say \"siv\" with an English I."
+  },
+  {
+   "slug": "son",
+   "danish": "søn",
+   "english": "son",
+   "target_sounds": [
+    "front_rounded"
+   ],
+   "how_to_anglicise": "Say English \"son\"."
+  },
+  {
+   "slug": "tre",
+   "danish": "tre",
+   "english": "three",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "how_to_anglicise": "Say it like English \"tray\" with an English R."
+  },
+  {
+   "slug": "ret",
+   "danish": "ret",
+   "english": "dish",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "how_to_anglicise": "Say English \"ret\" with a clear English R."
+  },
+  {
+   "slug": "ro",
+   "danish": "ro",
+   "english": "calm",
+   "target_sounds": [
+    "danish_r",
+    "vowel_length"
+   ],
+   "how_to_anglicise": "Say English \"row\" with an English R."
+  },
+  {
+   "slug": "mor",
+   "danish": "mor",
+   "english": "mother",
+   "target_sounds": [
+    "danish_r"
+   ],
+   "how_to_anglicise": "Say English \"more\" with an American R at the end."
+  },
+  {
+   "slug": "godmorgen",
+   "danish": "godmorgen",
+   "english": "good morning",
+   "target_sounds": [
+    "soft_d",
+    "danish_r"
+   ],
+   "how_to_anglicise": "Read it as English: \"god-morgan\"."
+  },
+  {
+   "slug": "tak",
+   "danish": "tak",
+   "english": "thanks",
+   "target_sounds": [
+    "vowel_length"
+   ],
+   "how_to_anglicise": "Control word: say \"tack\" like English."
+  },
+  {
+   "slug": "selvfolgelig",
+   "danish": "selvfølgelig",
+   "english": "of course",
+   "target_sounds": [
+    "front_rounded"
+   ],
+   "how_to_anglicise": "Read letter by letter the English way: \"selv-fol-ge-lig\"."
+  }
+ ]
+}
