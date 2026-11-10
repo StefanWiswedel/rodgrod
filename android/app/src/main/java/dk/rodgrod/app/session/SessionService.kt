@@ -184,6 +184,7 @@ class SessionService : Service() {
     /** Explains why no audio could be prepared, including Azure's own reason when there is one. */
     private fun audioProblem(error: String?, online: Boolean): String = when {
         !online -> "No audio is available offline yet. Connect to the internet and start again."
+        error != null && (error.contains("HTTP 401") || error.contains("HTTP 403")) -> KEY_REJECTED
         error != null -> "Couldn't create the Danish audio. Azure said: $error"
         else -> "Couldn't create the Danish audio. Please try again."
     }
@@ -338,6 +339,8 @@ class SessionService : Service() {
         const val ACTION_RESUME = "dk.rodgrod.app.RESUME"
         const val ACTION_CALIBRATE = "dk.rodgrod.app.CALIBRATE"
         const val EXTRA_RESUME = "resume"
+        const val KEY_REJECTED = "Azure rejected your key (it may have been regenerated, or the resource or subscription ended). " +
+            "In the Azure portal open your Speech resource → Keys and Endpoint, copy KEY 1, then in Settings tap Remove Azure key and enter it again."
 
         fun start(context: Context, resume: Boolean) {
             ContextCompat.startForegroundService(context,

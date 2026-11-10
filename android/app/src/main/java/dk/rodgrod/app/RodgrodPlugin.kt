@@ -213,7 +213,13 @@ class RodgrodPlugin : Plugin() {
         }))
         if (r.available < r.total) {
             // Report the real reason (e.g. Azure's error text) instead of a silent partial download.
-            throw ServiceUnavailableException("Downloaded ${r.available} of ${r.total} clips. " + (r.error ?: "Check your internet connection."))
+            val err = r.error
+            val why = when {
+                err == null -> "Check your internet connection."
+                r.available == 0 && (err.contains("HTTP 401") || err.contains("HTTP 403")) -> SessionService.KEY_REJECTED
+                else -> err
+            }
+            throw ServiceUnavailableException("Downloaded ${r.available} of ${r.total} clips. $why")
         }
         r.toJson().put("cacheBytes", graph.clipCache(null).sizeBytes())
     }
