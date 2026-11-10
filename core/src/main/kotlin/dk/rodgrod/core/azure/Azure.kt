@@ -58,8 +58,11 @@ class ServiceUnavailableException(msg: String, val configProblem: Boolean = fals
 
 private fun classify(resp: HttpResponse, what: String): Nothing {
     val auth = resp.code == 401 || resp.code == 403
+    // Azure's error text explains most failures (bad SSML, unknown voice, quota); keep a short, single-line excerpt.
+    val detail = resp.text.replace(Regex("\\s+"), " ").trim().take(200)
     throw ServiceUnavailableException(
-        "$what failed: HTTP ${resp.code}" + if (auth) " (check Azure key/region)" else "",
+        "$what failed: HTTP ${resp.code}" + (if (auth) " (check Azure key/region)" else "") +
+            (if (detail.isNotEmpty()) ": $detail" else ""),
         configProblem = auth,
     )
 }
@@ -99,14 +102,24 @@ class AzureTts(private val creds: AzureCredentials, private val http: HttpClient
         fun escapeXml(s: String) = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
             .replace("\"", "&quot;").replace("'", "&apos;")
 
+        /**
+         * Builds the SSML for one clip. Native voices get plain text (optionally inside <prosody>); a <lang> element is
+         * only added for multilingual voices speaking another locale, and never together with <prosody> (Azure documents
+         * <lang> as incompatible with prosody, and rejects it for voices that aren't multilingual).
+         */
         fun ssml(text: String, voice: String, locale: String, ratePercent: Int, pitchPercent: Int): String {
-            val prosody = ratePercent != 0 || pitchPercent != 0
-            val inner = if (prosody) {
-                "<prosody rate=\"${signed(ratePercent)}%\" pitch=\"${signed(pitchPercent)}%\">${escapeXml(text)}</prosody>"
-            } else escapeXml(text)
-            // <lang> lets multilingual voices speak the requested locale; harmless for native voices.
+            var inner = escapeXml(text)
+            if (ratePercent != 0 || pitchPercent != 0) {
+                val attrs = buildList {
+                    if (ratePercent != 0) add("rate=\"${signed(ratePercent)}%\"")
+                    if (pitchPercent != 0) add("pitch=\"${signed(pitchPercent)}%\"")
+                }.joinToString(" ")
+                inner = "<prosody $attrs>$inner</prosody>"
+            } else if (voice.contains("Multilingual", ignoreCase = true) && !voice.startsWith(locale, ignoreCase = true)) {
+                inner = "<lang xml:lang=\"$locale\">$inner</lang>"
+            }
             return "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"$locale\">" +
-                "<voice name=\"${escapeXml(voice)}\"><lang xml:lang=\"$locale\">$inner</lang></voice></speak>"
+                "<voice name=\"${escapeXml(voice)}\">$inner</voice></speak>"
         }
 
         private fun signed(v: Int) = if (v >= 0) "+$v" else "$v"

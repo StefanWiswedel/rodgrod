@@ -206,6 +206,10 @@ class RodgrodPlugin : Plugin() {
                 notifyListeners("offline", JSObject().put("done", done).put("total", total))
             }
         }
+        if (r.available < r.total) {
+            // Report the real reason (e.g. Azure's error text) instead of a silent partial download.
+            throw ServiceUnavailableException("Downloaded ${r.available} of ${r.total} clips. " + (r.error ?: "Check your internet connection."))
+        }
         r.toJson().put("cacheBytes", graph.clipCache(null).sizeBytes())
     }
 

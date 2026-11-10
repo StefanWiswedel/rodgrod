@@ -132,24 +132,16 @@ class SessionService : Service() {
             ctl.checkpoint()
 
             val existing = if (resume) engine.resumableSession() else null
-            val sessionId: Long
-            val plan = if (existing != null) {
-                sessionId = existing.id
-                existing.plan
-            } else {
-                val p = engine.compose()
-                sessionId = engine.createSession(p)
-                p
-            }
-            // Generate/cached all audio up front so the loop works offline apart from scoring.
+            val plan = existing?.plan ?: engine.compose()
+            // Generate/cache all audio up front so the loop works offline apart from scoring.
             val prep = engine.prepare(plan, planner, clips) { done, total ->
                 if (ctl.stopRequested) throw StopRequested()
                 publishPhase("preparing", "Preparing audio $done/$total", JSONObject().put("done", done).put("total", total))
             }
             SessionBus.publish("prepared", prep.toJson())
-            if (prep.playableProduction == 0) {
-                throw SetupException("No audio is available offline yet. Connect to the internet and start again.")
-            }
+            if (prep.playableProduction == 0) throw SetupException(audioProblem(prep.error, graph.isOnline()))
+            // Only now record the session, so a failed start never leaves a half-made session to "resume".
+            val sessionId = existing?.id ?: engine.createSession(plan)
 
             if (!fm.request()) Log.w(TAG, "audio focus not granted; continuing")
             val runner = SessionRunner(graph.content, settings, graph.store, clips, planner, voices, out,
@@ -176,6 +168,13 @@ class SessionService : Service() {
         }
     }
 
+    /** Explains why no audio could be prepared, including Azure's own reason when there is one. */
+    private fun audioProblem(error: String?, online: Boolean): String = when {
+        !online -> "No audio is available offline yet. Connect to the internet and start again."
+        error != null -> "Couldn't create the Danish audio. Azure said: $error"
+        else -> "Couldn't create the Danish audio. Please try again."
+    }
+
     /** In-app scoring check (Milestone 0): each word said carefully, then the English way; results saved for the UI. */
     private fun runCalibration(graph: AppGraph, creds: AzureCredentials, voices: Voices, clips: FileClipCache,
                                out: AndroidAudioOutput, fm: FocusManager, ctl: SessionControl) {
@@ -187,10 +186,11 @@ class SessionService : Service() {
             save = { r -> engine.saveCalibration(r); SessionBus.publish("calibration", r.toJson()) },
             listener = { snap -> onSnapshot(snap) })
         val specs = runner.clipsNeeded()
-        engine.ensureClips(specs, clips) { done, total ->
+        val available = engine.ensureClips(specs, clips) { done, total ->
             if (ctl.stopRequested) throw StopRequested()
             publishPhase("preparing", "Preparing audio $done/$total", JSONObject().put("done", done).put("total", total))
         }
+        if (available < specs.size / 2) throw SetupException(audioProblem(clips.lastError, graph.isOnline()))
         if (!fm.request()) Log.w(TAG, "audio focus not granted; continuing")
         runner.run()
     }

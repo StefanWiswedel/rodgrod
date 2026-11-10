@@ -90,6 +90,9 @@ class ClipPlanner(private val content: Content, private val voices: Voices, priv
 }
 
 interface ClipStore {
+    /** The most recent reason a clip could not be synthesised, for error messages. */
+    val lastError: String? get() = null
+
     /** Cached file path, or null. */
     fun path(spec: ClipSpec): String?
     /** Cached path, synthesising if needed. Null if it can't be obtained (offline, no key). */
@@ -99,16 +102,18 @@ interface ClipStore {
 /** On-disk MP3 cache keyed by [ClipSpec.key]. Works offline for anything already cached. */
 class FileClipCache(private val dir: File, private val tts: AzureTts?) : ClipStore {
     init { dir.mkdirs() }
+    @Volatile override var lastError: String? = null
+        private set
     private fun file(spec: ClipSpec) = File(dir, "${spec.key}.mp3")
 
     override fun path(spec: ClipSpec): String? = file(spec).takeIf { it.isFile && it.length() > 0 }?.absolutePath
 
     override fun ensure(spec: ClipSpec): String? {
         path(spec)?.let { return it }
-        val t = tts ?: return null
+        val t = tts ?: run { lastError = "No Azure key available"; return null }
         val bytes = try {
             t.synthesize(spec.text, spec.voice, spec.locale, spec.ratePercent, spec.pitchPercent)
-        } catch (e: ServiceUnavailableException) { return null }
+        } catch (e: ServiceUnavailableException) { lastError = e.message; return null }
         val tmp = File(dir, "${spec.key}.tmp")
         tmp.writeBytes(bytes)
         val f = file(spec)

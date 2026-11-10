@@ -63,11 +63,8 @@ class SessionEngine(
     }
 
     /** Ensures the given clips are cached; returns how many are available. */
-    fun ensureClips(specs: List<ClipSpec>, clips: ClipStore, onProgress: (Int, Int) -> Unit = { _, _ -> }): Int {
-        var available = 0
-        specs.forEachIndexed { i, spec -> if (clips.ensure(spec) != null) available++; onProgress(i + 1, specs.size) }
-        return available
-    }
+    fun ensureClips(specs: List<ClipSpec>, clips: ClipStore, onProgress: (Int, Int) -> Unit = { _, _ -> }): Int =
+        ensureAll(specs, clips, onProgress).available
 
     fun hvptAnswers(creds: AzureCredentials) = HvptAnswerSource { wav -> HvptAnswerRecognizer(AzureStt(creds, http)).recognize(wav) }
 
@@ -100,23 +97,41 @@ class SessionEngine(
 
     fun createSession(plan: SessionPlan): Long = store.createSession(plan, clock.nowMs())
 
-    data class PrepareResult(val total: Int, val available: Int, val synthesized: Int, val playableProduction: Int, val playableHvpt: Int) {
+    data class PrepareResult(val total: Int, val available: Int, val synthesized: Int, val playableProduction: Int, val playableHvpt: Int,
+                             val error: String? = null) {
         fun toJson(): JSONObject = JSONObject().put("total", total).put("available", available).put("synthesized", synthesized)
-            .put("playableProduction", playableProduction).put("playableHvpt", playableHvpt)
+            .put("playableProduction", playableProduction).put("playableHvpt", playableHvpt).put("error", error ?: JSONObject.NULL)
+    }
+
+    private data class EnsureStats(val available: Int, val synthesized: Int, val gaveUp: Boolean)
+
+    /**
+     * Ensures clips are cached. Gives up after [MAX_CONSECUTIVE_FAILURES] failures in a row with nothing obtained
+     * in between, so a bad key, bad request or missing network fails in seconds instead of trying every clip.
+     */
+    private fun ensureAll(specs: List<ClipSpec>, clips: ClipStore, onProgress: (Int, Int) -> Unit): EnsureStats {
+        var available = 0; var synthesized = 0; var failuresInRow = 0
+        for ((i, spec) in specs.withIndex()) {
+            val had = clips.path(spec) != null
+            if (clips.ensure(spec) != null) {
+                available++; failuresInRow = 0
+                if (!had) synthesized++
+            } else if (++failuresInRow >= MAX_CONSECUTIVE_FAILURES) {
+                onProgress(specs.size, specs.size)
+                return EnsureStats(available, synthesized, gaveUp = true)
+            }
+            onProgress(i + 1, specs.size)
+        }
+        return EnsureStats(available, synthesized, gaveUp = false)
     }
 
     /** Makes sure every clip the plan needs is cached (synthesising what's missing when online). */
     fun prepare(plan: SessionPlan, planner: ClipPlanner, clips: ClipStore, onProgress: (Int, Int) -> Unit = { _, _ -> }): PrepareResult {
         val needs = plan.tasks.indices.map { planner.needs(plan, it) }
         val all = needs.flatMap { it.required + it.optional }.distinct()
-        var available = 0
-        var synthesized = 0
-        all.forEachIndexed { i, spec ->
-            val had = clips.path(spec) != null
-            val p = clips.ensure(spec)
-            if (p != null) { available++; if (!had) synthesized++ }
-            onProgress(i + 1, all.size)
-        }
+        val stats = ensureAll(all, clips, onProgress)
+        val available = stats.available
+        val synthesized = stats.synthesized
         var production = 0
         var hvpt = 0
         plan.tasks.forEachIndexed { i, t ->
@@ -127,19 +142,16 @@ class SessionEngine(
             }
             if (ok) { if (t is Task.Production) production++ else hvpt++ }
         }
-        return PrepareResult(all.size, available, synthesized, production, hvpt)
+        return PrepareResult(all.size, available, synthesized, production, hvpt, if (available < all.size) clips.lastError else null)
     }
 
     /** Pre-cache the whole deck for offline use. */
     fun prepareDeck(planner: ClipPlanner, clips: ClipStore, onProgress: (Int, Int) -> Unit): PrepareResult {
         val all = planner.allDeckClips()
-        var available = 0; var synthesized = 0
-        all.forEachIndexed { i, spec ->
-            val had = clips.path(spec) != null
-            if (clips.ensure(spec) != null) { available++; if (!had) synthesized++ }
-            onProgress(i + 1, all.size)
-        }
-        return PrepareResult(all.size, available, synthesized, 0, 0)
+        val stats = ensureAll(all, clips, onProgress)
+        val available = stats.available
+        val synthesized = stats.synthesized
+        return PrepareResult(all.size, available, synthesized, 0, 0, if (available < all.size) clips.lastError else null)
     }
 
     /** An interrupted session from the last 12 hours that can be resumed. */
@@ -196,5 +208,6 @@ class SessionEngine(
 
     companion object {
         const val CALIBRATION_KEY = "calibration_report"
+        const val MAX_CONSECUTIVE_FAILURES = 6
     }
 }
