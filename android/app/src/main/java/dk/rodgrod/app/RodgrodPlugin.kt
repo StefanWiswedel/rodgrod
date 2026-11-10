@@ -216,7 +216,7 @@ class RodgrodPlugin : Plugin() {
             val err = r.error
             val why = when {
                 err == null -> "Check your internet connection."
-                r.available == 0 && (err.contains("HTTP 401") || err.contains("HTTP 403")) -> SessionService.KEY_REJECTED
+                r.synthesized == 0 && (err.contains("HTTP 401") || err.contains("HTTP 403")) -> SessionService.KEY_REJECTED
                 else -> err
             }
             throw ServiceUnavailableException("Downloaded ${r.available} of ${r.total} clips. $why")
