@@ -36,6 +36,7 @@ import dk.rodgrod.core.session.Voices
 import dk.rodgrod.core.session.RunState
 import dk.rodgrod.core.session.ScoringQueue
 import dk.rodgrod.core.session.SessionControl
+import dk.rodgrod.core.session.SessionEngine
 import dk.rodgrod.core.session.SessionInterrupted
 import dk.rodgrod.core.session.SessionRunner
 import dk.rodgrod.core.session.Snapshot
@@ -134,10 +135,10 @@ class SessionService : Service() {
             val existing = if (resume) engine.resumableSession() else null
             val plan = existing?.plan ?: engine.compose()
             // Generate/cache all audio up front so the loop works offline apart from scoring.
-            val prep = engine.prepare(plan, planner, clips) { done, total ->
+            val prep = engine.prepare(plan, planner, clips, { done, total ->
                 if (ctl.stopRequested) throw StopRequested()
                 publishPhase("preparing", "Preparing audio $done/$total", JSONObject().put("done", done).put("total", total))
-            }
+            }, pacing(ctl))
             SessionBus.publish("prepared", prep.toJson())
             if (prep.playableProduction == 0) throw SetupException(audioProblem(prep.error, graph.isOnline()))
             // Only now record the session, so a failed start never leaves a half-made session to "resume".
@@ -168,6 +169,18 @@ class SessionService : Service() {
         }
     }
 
+    /** Waits that Stop can interrupt, and tells the user when Azure is making us wait (free-tier limit). */
+    private fun pacing(ctl: SessionControl) = SessionEngine.Pacing(
+        onWait = { secs -> publishPhase("preparing", "Azure is limiting requests (free tier allows ~20 a minute). Waiting $secs s…") },
+        sleep = { ms ->
+            val end = System.currentTimeMillis() + ms
+            while (System.currentTimeMillis() < end) {
+                if (ctl.stopRequested) throw StopRequested()
+                Thread.sleep(200)
+            }
+        },
+    )
+
     /** Explains why no audio could be prepared, including Azure's own reason when there is one. */
     private fun audioProblem(error: String?, online: Boolean): String = when {
         !online -> "No audio is available offline yet. Connect to the internet and start again."
@@ -186,10 +199,10 @@ class SessionService : Service() {
             save = { r -> engine.saveCalibration(r); SessionBus.publish("calibration", r.toJson()) },
             listener = { snap -> onSnapshot(snap) })
         val specs = runner.clipsNeeded()
-        val available = engine.ensureClips(specs, clips) { done, total ->
+        val available = engine.ensureClips(specs, clips, { done, total ->
             if (ctl.stopRequested) throw StopRequested()
             publishPhase("preparing", "Preparing audio $done/$total", JSONObject().put("done", done).put("total", total))
-        }
+        }, pacing(ctl))
         if (available < specs.size / 2) throw SetupException(audioProblem(clips.lastError, graph.isOnline()))
         if (!fm.request()) Log.w(TAG, "audio focus not granted; continuing")
         runner.run()

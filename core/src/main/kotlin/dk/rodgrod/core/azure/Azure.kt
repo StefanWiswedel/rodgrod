@@ -54,7 +54,8 @@ class UrlConnectionHttpClient : HttpClient {
 }
 
 /** Thrown for failures where retrying later (e.g. when back online) makes sense. */
-class ServiceUnavailableException(msg: String, val configProblem: Boolean = false, cause: Throwable? = null) : IOException(msg, cause)
+class ServiceUnavailableException(msg: String, val configProblem: Boolean = false, cause: Throwable? = null, val httpCode: Int? = null) :
+    IOException(msg, cause)
 
 private fun classify(resp: HttpResponse, what: String): Nothing {
     val auth = resp.code == 401 || resp.code == 403
@@ -64,6 +65,7 @@ private fun classify(resp: HttpResponse, what: String): Nothing {
         "$what failed: HTTP ${resp.code}" + (if (auth) " (check Azure key/region)" else "") +
             (if (detail.isNotEmpty()) ": $detail" else ""),
         configProblem = auth,
+        httpCode = resp.code,
     )
 }
 

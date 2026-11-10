@@ -2,6 +2,7 @@ package dk.rodgrod.core.azure
 
 import dk.rodgrod.core.content.TestContent
 import dk.rodgrod.core.scoring.FakeHttp
+import dk.rodgrod.core.azure.HttpClient
 import dk.rodgrod.core.session.ClipPlanner
 import dk.rodgrod.core.session.FileClipCache
 import dk.rodgrod.core.session.SessionEngine
@@ -67,5 +68,46 @@ class AzureTtsTest {
         assertEquals(0, r.playableProduction)
         assertEquals(SessionEngine.MAX_CONSECUTIVE_FAILURES, calls)
         assertEquals("TTS failed: HTTP 400: Bad SSML", r.error)
+    }
+
+    private fun rig(http: HttpClient): Triple<SessionEngine, ClipPlanner, FileClipCache> {
+        val content = TestContent.content
+        val engine = SessionEngine(content, SqlStore(JdbcDb()), SystemClock, MemRecordings(), http)
+        val planner = ClipPlanner(content, Voices(listOf("da-DK-ChristelNeural"), "en-GB-SoniaNeural"), Settings())
+        val clips = FileClipCache(Files.createTempDirectory("clips").toFile(), AzureTts(AzureCredentials("k", "swedencentral"), http))
+        return Triple(engine, planner, clips)
+    }
+
+    private fun plan(n: Int) = SessionPlan(TestContent.content.items.filter { it.isProduction }.take(n).map { Task.Production(it.id, Mode.NEW) }, 1, 1)
+
+    @Test fun throttlingAfterSuccessIsRetriedThenPaced() {
+        // Works for 5 requests, refuses the next 2 (as the F0 tier did with 401), then works again.
+        var calls = 0
+        val http = FakeHttp { _, _, _ -> calls++; if (calls in 6..7) HttpResponse(401, ByteArray(0)) else HttpResponse(200, byteArrayOf(1, 2, 3)) }
+        val (engine, planner, clips) = rig(http)
+        val sleeps = ArrayList<Long>()
+        val waits = ArrayList<Int>()
+        val r = engine.prepare(plan(4), planner, clips, pacing = SessionEngine.Pacing(onWait = { waits += it }, sleep = { sleeps += it }))
+        assertEquals(r.total, r.available)
+        assertEquals(listOf(15, 30), waits)
+        assertTrue("paced after throttling", sleeps.count { it == SessionEngine.PACE_MS } > 0)
+    }
+
+    @Test fun unauthorisedFromTheStartIsNotRetried() {
+        var calls = 0
+        val (engine, planner, clips) = rig(FakeHttp { _, _, _ -> calls++; HttpResponse(401, ByteArray(0)) })
+        val sleeps = ArrayList<Long>()
+        val r = engine.prepare(plan(4), planner, clips, pacing = SessionEngine.Pacing(sleep = { sleeps += it }))
+        assertEquals(0, r.available)
+        assertTrue(sleeps.isEmpty())
+        assertEquals(SessionEngine.MAX_CONSECUTIVE_FAILURES, calls)
+        assertTrue(r.error!!.contains("401"))
+    }
+
+    @Test fun tooManyRequestsIsAlwaysRetried() {
+        var calls = 0
+        val (engine, planner, clips) = rig(FakeHttp { _, _, _ -> calls++; if (calls == 1) HttpResponse(429, ByteArray(0)) else HttpResponse(200, byteArrayOf(1)) })
+        val r = engine.prepare(plan(2), planner, clips, pacing = SessionEngine.Pacing(sleep = { }))
+        assertEquals(r.total, r.available)
     }
 }

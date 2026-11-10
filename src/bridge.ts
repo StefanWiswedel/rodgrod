@@ -26,7 +26,7 @@ export interface RodgrodPlugin {
   addListener(event: 'session', fn: (s: SessionSnapshot) => void): Promise<PluginListenerHandle>;
   addListener(event: 'prepared' | 'ended', fn: (d: Record<string, unknown>) => void): Promise<PluginListenerHandle>;
   addListener(event: 'calibration', fn: (r: CalibrationReport) => void): Promise<PluginListenerHandle>;
-  addListener(event: 'offline', fn: (d: { done: number; total: number }) => void): Promise<PluginListenerHandle>;
+  addListener(event: 'offline', fn: (d: { done?: number; total?: number; waiting?: number }) => void): Promise<PluginListenerHandle>;
 }
 
 /** On Android this is the native plugin; in a desktop browser (`npm run dev`) a mock that simulates a session. */

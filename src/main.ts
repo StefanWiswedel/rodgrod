@@ -14,7 +14,7 @@ const tabs = document.getElementById('tabs')!;
 let tab: Tab = 'practice';
 let status: Status | null = null;
 let snapshot: SessionSnapshot | null = null;
-let offlineProgress: { done: number; total: number } | null = null;
+let offlineProgress: { done?: number; total?: number; waiting?: number } | null = null;
 let busy = '';
 
 // ---- tiny DOM helper (textContent only: never inject HTML from content or recognition results) ----
@@ -159,17 +159,28 @@ function renderPractice(): HTMLElement {
     }
     extras.append(
       h('p', {}, 'Before driving, you can download all audio so sessions work without signal (only scoring needs the internet).'),
+      h('p', { class: 'fine' }, 'On the free Azure tier (about 20 clips a minute) the full download can take up to an hour; keep the app open. Starting a session only prepares what that session needs.'),
       h('button', { class: 'secondary', disabled: !!busy, onclick: () => run('Downloading audio…', async () => {
-        const r = await Rodgrod.prepareOffline();
-        offlineProgress = null;
-        toast(`Audio ready: ${r.available}/${r.total} clips (${formatBytes(r.cacheBytes)}).`);
-      }) }, offlineProgress ? `Downloading ${offlineProgress.done}/${offlineProgress.total}…` : 'Download all audio for offline'),
+        try {
+          const r = await Rodgrod.prepareOffline();
+          toast(`Audio ready: ${r.available}/${r.total} clips (${formatBytes(r.cacheBytes)}).`);
+        } finally {
+          offlineProgress = null;
+        }
+      }) }, offlineLabel()),
     );
     if (!status.online) extras.append(h('p', { class: 'fine' }, 'You seem to be offline: sessions use cached audio and queue scoring for later.'));
     wrap.append(extras);
   }
   if (busy) wrap.append(h('p', { class: 'fine center' }, busy));
   return wrap;
+}
+
+function offlineLabel(): string {
+  const p = offlineProgress;
+  if (!p) return 'Download all audio for offline';
+  const count = p.total ? ` ${p.done ?? 0}/${p.total}` : '';
+  return p.waiting ? `Waiting for Azure (${p.waiting} s)…${count}` : `Downloading${count}…`;
 }
 
 async function askPermissions() {
@@ -394,7 +405,7 @@ async function init() {
   });
   await Rodgrod.addListener('ended', () => { void refresh(); });
   await Rodgrod.addListener('calibration', () => { if (tab === 'settings') render(); });
-  await Rodgrod.addListener('offline', (p) => { offlineProgress = p; if (tab === 'practice') render(); });
+  await Rodgrod.addListener('offline', (p) => { offlineProgress = { ...offlineProgress, ...p }; if (tab === 'practice') render(); });
   document.addEventListener('visibilitychange', () => { if (!document.hidden) void refresh(); });
   await refresh();
 }

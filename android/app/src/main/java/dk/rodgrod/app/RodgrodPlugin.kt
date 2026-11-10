@@ -199,13 +199,18 @@ class RodgrodPlugin : Plugin() {
         val voices = graph.engine.resolveVoices(creds) ?: throw ServiceUnavailableException("Couldn't load voices")
         val planner = ClipPlanner(graph.content, voices, graph.engine.settings())
         var lastSent = 0L
-        val r = graph.engine.prepareDeck(planner, graph.clipCache(creds)) { done, total ->
+        var waiting = 0
+        val r = graph.engine.prepareDeck(planner, graph.clipCache(creds), { done, total ->
             val now = System.currentTimeMillis()
             if (now - lastSent > 300 || done == total) {
                 lastSent = now
-                notifyListeners("offline", JSObject().put("done", done).put("total", total))
+                notifyListeners("offline", JSObject().put("done", done).put("total", total).put("waiting", waiting))
             }
-        }
+            waiting = 0
+        }, dk.rodgrod.core.session.SessionEngine.Pacing(onWait = { secs ->
+            waiting = secs
+            notifyListeners("offline", JSObject().put("waiting", secs))
+        }))
         if (r.available < r.total) {
             // Report the real reason (e.g. Azure's error text) instead of a silent partial download.
             throw ServiceUnavailableException("Downloaded ${r.available} of ${r.total} clips. " + (r.error ?: "Check your internet connection."))

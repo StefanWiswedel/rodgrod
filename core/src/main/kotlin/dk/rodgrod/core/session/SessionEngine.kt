@@ -63,8 +63,8 @@ class SessionEngine(
     }
 
     /** Ensures the given clips are cached; returns how many are available. */
-    fun ensureClips(specs: List<ClipSpec>, clips: ClipStore, onProgress: (Int, Int) -> Unit = { _, _ -> }): Int =
-        ensureAll(specs, clips, onProgress).available
+    fun ensureClips(specs: List<ClipSpec>, clips: ClipStore, onProgress: (Int, Int) -> Unit = { _, _ -> }, pacing: Pacing = Pacing()): Int =
+        ensureAll(specs, clips, onProgress, pacing).available
 
     fun hvptAnswers(creds: AzureCredentials) = HvptAnswerSource { wav -> HvptAnswerRecognizer(AzureStt(creds, http)).recognize(wav) }
 
@@ -105,15 +105,35 @@ class SessionEngine(
 
     private data class EnsureStats(val available: Int, val synthesized: Int, val gaveUp: Boolean)
 
+    /** How clip downloads report and wait. [sleep] must honour a stop request (the service checks between short naps). */
+    class Pacing(
+        val onWait: (seconds: Int) -> Unit = {},
+        val sleep: (Long) -> Unit = { Thread.sleep(it) },
+    )
+
     /**
-     * Ensures clips are cached. Gives up after [MAX_CONSECUTIVE_FAILURES] failures in a row with nothing obtained
-     * in between, so a bad key, bad request or missing network fails in seconds instead of trying every clip.
+     * Ensures clips are cached.
+     * - Throttling (429, a server error, or a 401/403 for a key that already worked in this run, as seen on the free
+     *   tier): wait and retry the same clip with growing pauses, then keep a slower pace (the F0 tier allows about
+     *   20 synthesis requests a minute).
+     * - Anything else: gives up after [MAX_CONSECUTIVE_FAILURES] failures in a row, so a bad key, bad request or
+     *   missing network fails in seconds instead of trying every clip.
      */
-    private fun ensureAll(specs: List<ClipSpec>, clips: ClipStore, onProgress: (Int, Int) -> Unit): EnsureStats {
-        var available = 0; var synthesized = 0; var failuresInRow = 0
+    private fun ensureAll(specs: List<ClipSpec>, clips: ClipStore, onProgress: (Int, Int) -> Unit, pacing: Pacing): EnsureStats {
+        var available = 0; var synthesized = 0; var failuresInRow = 0; var slow = false
         for ((i, spec) in specs.withIndex()) {
             val had = clips.path(spec) != null
-            if (clips.ensure(spec) != null) {
+            if (!had && slow) pacing.sleep(PACE_MS)
+            var ok = clips.ensure(spec) != null
+            var retry = 0
+            while (!ok && retry < BACKOFF_MS.size && looksThrottled(clips.lastErrorCode, synthesized > 0)) {
+                slow = true
+                pacing.onWait((BACKOFF_MS[retry] / 1000).toInt())
+                pacing.sleep(BACKOFF_MS[retry])
+                retry++
+                ok = clips.ensure(spec) != null
+            }
+            if (ok) {
                 available++; failuresInRow = 0
                 if (!had) synthesized++
             } else if (++failuresInRow >= MAX_CONSECUTIVE_FAILURES) {
@@ -125,11 +145,15 @@ class SessionEngine(
         return EnsureStats(available, synthesized, gaveUp = false)
     }
 
+    private fun looksThrottled(code: Int?, keyWorked: Boolean) =
+        code == 429 || (code != null && code >= 500) || (keyWorked && (code == 401 || code == 403))
+
     /** Makes sure every clip the plan needs is cached (synthesising what's missing when online). */
-    fun prepare(plan: SessionPlan, planner: ClipPlanner, clips: ClipStore, onProgress: (Int, Int) -> Unit = { _, _ -> }): PrepareResult {
+    fun prepare(plan: SessionPlan, planner: ClipPlanner, clips: ClipStore, onProgress: (Int, Int) -> Unit = { _, _ -> },
+                pacing: Pacing = Pacing()): PrepareResult {
         val needs = plan.tasks.indices.map { planner.needs(plan, it) }
         val all = needs.flatMap { it.required + it.optional }.distinct()
-        val stats = ensureAll(all, clips, onProgress)
+        val stats = ensureAll(all, clips, onProgress, pacing)
         val available = stats.available
         val synthesized = stats.synthesized
         var production = 0
@@ -146,9 +170,9 @@ class SessionEngine(
     }
 
     /** Pre-cache the whole deck for offline use. */
-    fun prepareDeck(planner: ClipPlanner, clips: ClipStore, onProgress: (Int, Int) -> Unit): PrepareResult {
+    fun prepareDeck(planner: ClipPlanner, clips: ClipStore, onProgress: (Int, Int) -> Unit, pacing: Pacing = Pacing()): PrepareResult {
         val all = planner.allDeckClips()
-        val stats = ensureAll(all, clips, onProgress)
+        val stats = ensureAll(all, clips, onProgress, pacing)
         val available = stats.available
         val synthesized = stats.synthesized
         return PrepareResult(all.size, available, synthesized, 0, 0, if (available < all.size) clips.lastError else null)
@@ -209,5 +233,8 @@ class SessionEngine(
     companion object {
         const val CALIBRATION_KEY = "calibration_report"
         const val MAX_CONSECUTIVE_FAILURES = 6
+        /** Pause between synthesis requests once Azure has throttled us (~18 a minute, under the F0 limit of 20). */
+        const val PACE_MS = 3300L
+        val BACKOFF_MS = longArrayOf(15_000, 30_000, 65_000)
     }
 }
